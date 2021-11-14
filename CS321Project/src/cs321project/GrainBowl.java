@@ -1,4 +1,4 @@
-package cs321project; // Change this, if needed
+package cs321_project; // Change this, if needed
 /**
  CS 321-03 GROUP PROJECT (PANERA BREAD)
  GRAINBOWL CLASS
