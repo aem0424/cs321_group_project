@@ -14,12 +14,12 @@ public class Connection
 {
    /**
       Construct a Connection object.
-      @param c a Cart object
+      @param o a OrderQueue object
       @param i a Input object
    */
-   public Connection(Cart c, Input i)
+   public Connection(OrderQueue o, Input i)
    {
-      cart = c;
+      orderq = o;
       input = i;
       resetConnection();
    }
@@ -34,16 +34,16 @@ public class Connection
          connect(key);
       else if (state == RECORDING)
          login(key);
-      else if (state == CHANGE_PASSCODE)
-         changePasscode(key);
-      else if (state == CHANGE_GREETING)
-         changeGreeting(key);
-      else if (state == MAILBOX_MENU)
-         mailboxMenu(key);
-      else if (state == MESSAGE_MENU)
-         messageMenu(key);
-      else if (state == FORWARD_MESSAGE)
-         forwardMessage(key);
+      else if (state == WELCOME)
+         welcomeMenu(key);
+      else if (state == ORDER_MENU)
+         orderMenu(key);
+      else if (state == DELIVERY_MENU)
+         deliveryMenu(key);
+      else if (state == PAYMENT_MENU)
+         paymentMenu(key);
+      else if (state == SUBMIT_MENU)
+         submitMenu(key);
    }
 
    /**
@@ -52,14 +52,13 @@ public class Connection
    */
    public void record(String voice)
    {
-      
          currentRecording += voice;
    }
 
    /**
       The user hangs up the phone.
    */
-   public void hangup()
+   public void hangup()           //not sure what this will become (maybe finish order?)  
    {
       if (state == RECORDING)
          currentMailbox.addMessage(new Message(currentRecording));
@@ -68,14 +67,14 @@ public class Connection
 
    /**
       Reset the connection to the initial state and prompt
-      for mailbox number
+      for login
    */
    private void resetConnection()
    {
       currentRecording = "";
       accumulatedKeys = "";
       state = CONNECTED;
-      phone.speak(INITIAL_PROMPT);
+      input.speak(INITIAL_PROMPT);
    }
 
    /**
@@ -105,22 +104,21 @@ public class Connection
       Try to log in the user.
       @param key the phone key pressed by the user
    */
-   private void login(String key)
+   private void login(String key)   //need to differentiate between users from xml storage file
    {
-      if (key.equals("#"))
+      if (key.equals("customer"))
       {
-         if (currentMailbox.checkPasscode(accumulatedKeys))
+         if (currentCart.checkPasscode(accumulatedKeys))
          {
             state = MAILBOX_MENU;
-            phone.speak(MAILBOX_MENU_TEXT);
+            input.speak(MAILBOX_MENU_TEXT);
          }
          else
-            phone.speak("Incorrect passcode. Try again!");
+            input.speak("Incorrect passcode. Try again!");
          accumulatedKeys = "";
       }
       else
          accumulatedKeys += key;
-   }
 
    /**
       Change passcode.
@@ -158,12 +156,12 @@ public class Connection
       Respond to the user's selection from mailbox menu.
       @param key the phone key pressed by the user
    */
-   private void mailboxMenu(String key)
+   private void welcomeMenu(String key)
    {
       if (key.equals("1"))
       {
-         state = MESSAGE_MENU;
-         phone.speak(MESSAGE_MENU_TEXT);
+         state = WELCOME;
+         input.speak(WELCOME_TEXT);
       }
       else if (key.equals("2"))
       {
@@ -181,7 +179,7 @@ public class Connection
       Respond to the user's selection from message menu.
       @param key the phone key pressed by the user 
    */
-   private void messageMenu(String key)
+   private void orderMenu(String key)
    {
       if (key.equals("1"))
       {
@@ -257,31 +255,33 @@ public class Connection
          accumulatedKeys += key;
     }
 
-   private MailSystem system;
-   private Mailbox currentMailbox;
+   private OrderQueue orderq;
+   private Cart currentCart;
    private String currentRecording;
    private String accumulatedKeys;
-   private Telephone phone;
+   private Input input;
    private int state;
 
    private static final int DISCONNECTED = 0;
    private static final int CONNECTED = 1;
    private static final int RECORDING = 2;
-   private static final int MAILBOX_MENU = 3;
-   private static final int MESSAGE_MENU = 4;
-   private static final int CHANGE_PASSCODE = 5;
-   private static final int CHANGE_GREETING = 6;
-   private static final int FORWARD_MESSAGE = 7;
-
+   private static final int WELCOME = 3;
+   private static final int ORDER_MENU = 4;
+   private static final int DELIVERY_MENU = 5;
+   private static final int PAYMENT_MENU = 6;
+   private static final int SUBMIT_MENU = 7;
+              
    private static final String INITIAL_PROMPT = 
-         "Enter mailbox number followed by #";      
-   private static final String MAILBOX_MENU_TEXT = 
+         "Enter your login info.";      
+   private static final String ORDER_MENU_TEXT = 
          "Enter 1 to listen to your messages\n"
          + "Enter 2 to change your passcode\n"
          + "Enter 3 to change your greeting";
-   private static final String MESSAGE_MENU_TEXT = 
-         "Enter 1 to listen to the current message\n"
-         + "Enter 2 to save the current message\n"
-         + "Enter 3 to delete the current message\n"
-         + "Enter 4 to forward the current message\n"
-         + "Enter 5 to return to the main menu";
+   private static final String DELIVERY_MENU_TEXT = 
+         "Enter 1 for Delivery\n"
+         + "Enter 2 for Pickup";
+   private static final String PAYMENT_MENU_TEXT = 
+         "Enter your credit card number, cvc, expiration date, and zip code";
+   private static final String SUBMIT_MENU_TEXT = 
+         "Please review and submit your order.";
+}
