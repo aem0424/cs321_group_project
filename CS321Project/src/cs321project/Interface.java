@@ -15,6 +15,5 @@ public interface Interface {
     float getPrice(); // Returns the price of the item (float by default)
     int getType(); // Returns the item's type if applicable
     int getSize(); // Returns the item's size, corresponding to an int value
-    int[] getExtras(); // Made this an array if we use permutations for the extras (remove this if we don't use extras)
     String getName(); // Returns the name of the menu item; type determines the name for some (we may need this)
 } // END OF FILE
