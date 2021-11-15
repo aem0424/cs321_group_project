@@ -32,8 +32,6 @@ public class Connection
    {       
       if (state == CONNECTED)
          connect(key);
-      else if (state == RECORDING)
-         login(key);
       else if (state == WELCOME)
          welcomeMenu(key);
       else if (state == ORDER_MENU)
@@ -104,9 +102,9 @@ public class Connection
       Try to log in the user.
       @param key the phone key pressed by the user
    */
-   private void login(String key)   //need to differentiate between users from xml storage file
-   {
-      if (key.equals("customer"))
+   private void welcomeMenu(String key)   //need to differentiate between users from xml storage file
+   {                                //incomplete
+      if (key.equals("Customer"))
       {
          if (currentCart.checkPasscode(accumulatedKeys))
          {
@@ -117,20 +115,32 @@ public class Connection
             input.speak("Incorrect passcode. Try again!");
          accumulatedKeys = "";
       }
+      
+      else if (key.equals("Employee"))
+      {
+          
+      }
+      
+      else if (key.equals("Employee"))
+      {
+          
+      }
+      
       else
          accumulatedKeys += key;
-
+   }
+   
    /**
-      Change passcode.
+      Change pass code.
       @param key the phone key pressed by the user
    */
-   private void changePasscode(String key)
+   private void changePasscode(String key) //maybe keep this?
    {
       if (key.equals("#"))
       {
-         currentMailbox.setPasscode(accumulatedKeys);
-         state = MAILBOX_MENU;
-         phone.speak(MAILBOX_MENU_TEXT);
+         currentCart.setPasscode(accumulatedKeys);
+         state = WELCOME;
+         input.speak(WELCOME_TEXT);
          accumulatedKeys = "";
       }
       else
@@ -138,123 +148,93 @@ public class Connection
    }
 
    /**
-      Change greeting.
-      @param key the phone key pressed by the user
-   */
-   private void changeGreeting(String key)
-   {
-      if (key.equals("#"))
-      {
-         currentMailbox.setGreeting(currentRecording);
-         currentRecording = "";
-         state = MAILBOX_MENU;
-         phone.speak(MAILBOX_MENU_TEXT);
-      }
-   }
-
-   /**
-      Respond to the user's selection from mailbox menu.
-      @param key the phone key pressed by the user
-   */
-   private void welcomeMenu(String key)
-   {
-      if (key.equals("1"))
-      {
-         state = WELCOME;
-         input.speak(WELCOME_TEXT);
-      }
-      else if (key.equals("2"))
-      {
-         state = CHANGE_PASSCODE;
-         phone.speak("Enter new passcode followed by the # key");
-      }
-      else if (key.equals("3"))
-      {
-         state = CHANGE_GREETING;
-         phone.speak("Record your greeting, then press the # key");
-      }
-   }
-
-   /**
       Respond to the user's selection from message menu.
-      @param key the phone key pressed by the user 
+      @param key the interface key pressed by the user 
    */
-   private void orderMenu(String key)
+   private void orderMenu(String key) //need to fill with order options (sandwich, etc.)
    {
       if (key.equals("1"))
       {
-         String output = "";
-         Message m = currentMailbox.getCurrentMessage();
-         if (m == null) output += "No messages." + "\n";
-         else output += m.getText() + "\n";
-         output += MESSAGE_MENU_TEXT;
-         phone.speak(output);
+         
       }
       else if (key.equals("2"))
       {
-         currentMailbox.saveCurrentMessage();
-         phone.speak(MESSAGE_MENU_TEXT);
+         
       }
       else if (key.equals("3"))
       {
-         currentMailbox.removeCurrentMessage();
-         phone.speak(MESSAGE_MENU_TEXT);
-      }
-      else if (key.equals("5"))
-      {
-         state = MAILBOX_MENU;
-         phone.speak(MAILBOX_MENU_TEXT);
+         
       }
       else if (key.equals("4"))
       {
-         if (currentMailbox.getCurrentMessage() != null)
-         {
-         state = FORWARD_MESSAGE;
-         phone.speak(FORWARD_TEXT);
-         }
          
-         else
-         {
-             phone.speak("There are no messages to forward.");
-             phone.speak(MAILBOX_MENU_TEXT);
-         }
+      }
+      else if (key.equals("5"))
+      {
+         
+      }
+      
+      else
+      {
+          
       }
     }
    
     /**
-      Forwards a message to another mailbox.
+      Delivery Menu.
       @param key phone key pressed by the user
    */   
-    private void forwardMessage(String key)
+    private void deliveryMenu(String key)
     {
-      if (key.equals("#"))
+      if (key.equals("1"))
       {         
-         Mailbox forwardMailbox = system.findMailbox(accumulatedKeys);
-         Message forwardM = currentMailbox.getCurrentMessage();
-         if (forwardMailbox != null)
-         {
-             try 
-             {
-                forwardMailbox.addMessage((Message)forwardM.cloneMessage());
-                phone.speak("Message forwarded to " + accumulatedKeys + ".");
-             } 
-             
-             catch (CloneNotSupportedException ex) 
-             {
-                phone.speak("Message cannot be forwarded.");
-             }
-             
-             state = MESSAGE_MENU;
-             phone.speak(MESSAGE_MENU_TEXT);
-         }
-         else
-            phone.speak("Incorrect mailbox number. Try again!");
-            accumulatedKeys = "";
-       }
-       else
+         
+      }
+      
+      else if (key.equals("2"))
+      {
+          
+      }
+      
+      else
          accumulatedKeys += key;
     }
 
+    /**
+      Delivery Menu.
+      @param key phone key pressed by the user
+   */   
+    private void paymentMenu(String key)
+    {
+      if (key.equals("1"))
+      {         
+         
+      }
+      
+      else if (key.equals("2"))
+      {
+          
+      }
+      
+      else
+         accumulatedKeys += key;
+    }
+
+    /**
+      Delivery Menu.
+      @param key phone key pressed by the user
+   */   
+    private void submitMenu(String key)
+    {
+      if (key.equals("1"))
+      {         
+         
+      }
+
+      else
+         accumulatedKeys += key;
+    }
+    
    private OrderQueue orderq;
    private Cart currentCart;
    private String currentRecording;
@@ -264,12 +244,11 @@ public class Connection
 
    private static final int DISCONNECTED = 0;
    private static final int CONNECTED = 1;
-   private static final int RECORDING = 2;
-   private static final int WELCOME = 3;
-   private static final int ORDER_MENU = 4;
-   private static final int DELIVERY_MENU = 5;
-   private static final int PAYMENT_MENU = 6;
-   private static final int SUBMIT_MENU = 7;
+   private static final int WELCOME = 2;
+   private static final int ORDER_MENU = 3;
+   private static final int DELIVERY_MENU = 4;
+   private static final int PAYMENT_MENU = 5;
+   private static final int SUBMIT_MENU = 6;
               
    private static final String INITIAL_PROMPT = 
          "Enter your login info.";      
