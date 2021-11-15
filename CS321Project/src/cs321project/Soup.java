@@ -10,7 +10,7 @@ package cs321project;
  SOUP CLASS
  Dr. Huaming Zhang
  CS 321-03
- November 10, 2021
+ November 15, 2021
 
 This is a very early version of the SOUP class. It will be added onto and
 revised later, and will get a proper description then. 
