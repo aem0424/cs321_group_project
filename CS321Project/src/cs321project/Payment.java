@@ -12,12 +12,23 @@ package cs321project;
 */
 
 public class Payment {
+    // NOTE: checkInfo WILL BE OPTIMIZED LATER; FOR NOW, I WANTED TO MAKE SOMETHING FUNCTIONAL ENOUGH.
+    
         /** Validates that all of the data in the PaymentInfo object is valid; if any of it is invalid,
         * return false.
+        * @param info: The payment information to check.
         * @return validInfo: Returns true if all data is valid, and returns false otherwise. */
         public boolean checkInfo(PaymentInfo info) {
-            int placeholder = 0; // WILL BE REPLACED WITH ACTUAL DATA LATER
-            if(placeholder == 0) {
+            // GET TEMPORARY VALUES (slightly more optimized than repeating the get functions)
+            int tempZip = info.getZip();
+            long tempCC = info.getCCnum();
+            int tempEXP = info.getExp();
+            int tempCVC = info.getCvc();
+            
+            // THE CONDITION STATEMENT IS A WORK-IN-PROGRESS
+            if(tempZip > 0 && tempZip < 100000 &&
+               tempCVC > 99 && tempCVC < 10000 && // Most CVC values are 3 or 4 digits
+               tempCC != 0 && tempEXP != 0) { // Will work on this later
                 validInfo = true;
             }
             else { // If any data is incorrect, reject payment
@@ -26,5 +37,5 @@ public class Payment {
             return validInfo;
         }
     
-    private boolean validInfo = false; // Defaults to false in case of an error
+    private boolean validInfo = false; // Defaults to false in case of an error (this variable may be redundant; let me make sure)
 } // END OF FILE

@@ -1,8 +1,7 @@
 package cs321project;
-import java.util.ArrayList;
 /**
  CS 321-03 GROUP PROJECT (PANERA BREAD)
- PAYMENTINFO CLASS
+ PaymentInfo.java
  Dr. Huaming Zhang
  CS 321-03
  November 15, 2021
@@ -12,37 +11,56 @@ import java.util.ArrayList;
  be valid. Otherwise, the transaction will not happen.
 */
 
-/**
- *
- * @author antho
- */
 public class PaymentInfo {
-    ArrayList<String> getInfo(long ccnum, int cvc, int exp, int zip) {
-        ArrayList<String> newData = new ArrayList();
-        // TO DO: ADD VERIFICATION CODE HERE . . . (may be best to do this once we have an .xml file)
-        return newData;
+    /**
+      The default constructor for the PaymentInfo class; the values will be obtained
+      from the user inputting their payment information.
+      @param ccnum: The value to be assigned to an object's ccnum variable.
+      @param cvc: The value to be assigned to an object's cvc variable.
+      @param exp: The value to be assigned to an object's exp variable.
+      @param zip: The value to be assigned to an object's zip variable.
+    */
+    public PaymentInfo(long ccnum, int cvc, int exp, int zip) {
+        // INITIALIZE THE VALUES FOR THIS OBJECT
+        this.ccnum = ccnum;
+        this.cvc = cvc;
+        this.exp = exp;
+        this.zip = zip;
     }
     
-    // THE BELOW FOUR "GET" FUNCTIONS (if we use them) WILL BE REVISED TO MAKE
-    // THEM COMPATIBLE WITH THE ArrayList<String> FORMAT; THEY ARE INCLUDED
-    // HERE FOR THE SAKE OF HAVING ALL NECESSARY DATA AS SOON AS POSSIBLE
-    
-    long getCC() {
-        return ccnum;
+    /**
+    Gets the value for a PaymentInfo object's CC number.
+    @return this.ccnum: The ccnum value for this object.
+    */
+    long getCCnum() {
+        return this.ccnum;
     }
-    
-    int getCVC() {
-        return cvc;
+
+    /**
+    Gets the value for a PaymentInfo object's CVC number.
+    @return this.cvc: The cvc value for this object.
+    */    
+    int getCvc() {
+        return this.cvc;
     }
-    
+
+    /**
+    Gets the value for a PaymentInfo object's expiration date.
+    @return this.exp: The exp value for this object.
+    */      
     int getExp() {
-        return exp;
+        return this.exp;
     }
     
+    /**
+    Gets the value for a PaymentInfo object's ZIP code.
+    @return this.zip: The zip value for this object.
+    */          
     int getZip() {
-        return zip;
+        return this.zip;
     }
     
+    // PRIVATE VARIABLES
     private long ccnum; // The numbers on the front of the credit card
     private int cvc; // The three (or so) numbers on the back
     private int exp; // The credit card's expiration date (be sure to account for both 3-digit and 4-digit expiration dates)
