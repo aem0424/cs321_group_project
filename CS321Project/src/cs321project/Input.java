@@ -14,11 +14,10 @@ import java.util.Scanner;
 public class Input {
     /**
       Construct phone object.
-      @param aScanner that reads text from a character-input stream
    */
-   public Input(Scanner aScanner)
+   public Input()
    {
-      scanner = aScanner;
+      //GUI code here
    }
 
    /**

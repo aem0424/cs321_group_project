@@ -30,37 +30,22 @@ public class Connection
    */
    public void dial(String key)
    {       
-      if (state == CONNECTED)
-         connect(key);
-      else if (state == WELCOME)
+      if (state == WELCOME)
          welcomeMenu(key);
       else if (state == ORDER_MENU)
          orderMenu(key);
+      else if (state == ORDER_OPT_MENU)
+         orderOptMenu(key);
       else if (state == DELIVERY_MENU)
          deliveryMenu(key);
       else if (state == PAYMENT_MENU)
          paymentMenu(key);
       else if (state == SUBMIT_MENU)
          submitMenu(key);
-   }
-
-   /**
-      Record voice.
-      @param voice voice spoken by the user
-   */
-   public void record(String voice)
-   {
-         currentRecording += voice;
-   }
-
-   /**
-      The user hangs up the phone.
-   */
-   public void hangup()           //not sure what this will become (maybe finish order?)  
-   {
-      if (state == RECORDING)
-         currentMailbox.addMessage(new Message(currentRecording));
-      resetConnection();
+      else if (state == PROCESSING_MENU)
+         processMenu(key);
+      else if (state == DONE_MENU)
+         doneMenu(key);
    }
 
    /**
@@ -69,33 +54,10 @@ public class Connection
    */
    private void resetConnection()
    {
-      currentRecording = "";
+      currentFood = "";
       accumulatedKeys = "";
-      state = CONNECTED;
-      input.speak(INITIAL_PROMPT);
-   }
-
-   /**
-      Try to connect the user with the specified mailbox.
-      @param key the phone key pressed by the user
-   */
-   private void connect(String key)
-   {
-      if (key.equals("S"))
-      {         
-          currentMailbox = system.findMailbox(accumulatedKeys);  
-         if (currentMailbox != null)
-         {
-            state = RECORDING;
-            phone.speak(currentMailbox.getGreeting());
-         }
-         else
-            phone.speak("Incorrect mailbox number. Try again!");
-         accumulatedKeys = "";
-      }
-      else
-         accumulatedKeys += key;
-        
+      state = WELCOME;
+      input.speak(WELCOME_TEXT);
    }
 
    /**
@@ -104,24 +66,35 @@ public class Connection
    */
    private void welcomeMenu(String key)   //need to differentiate between users from xml storage file
    {                                //incomplete
+      state = WELCOME;
+      
       if (key.equals("Customer"))
       {
-         if (currentCart.checkPasscode(accumulatedKeys))
+         if (currentTicket.checkPasscode(accumulatedKeys))
          {
-            state = MAILBOX_MENU;
-            input.speak(MAILBOX_MENU_TEXT);
+            state = ORDER_MENU;
+            input.speak(ORDER_MENU_TEXT);
          }
          else
             input.speak("Incorrect passcode. Try again!");
+         
          accumulatedKeys = "";
       }
       
       else if (key.equals("Employee"))
       {
-          
+          if (currentTicket.checkPasscode(accumulatedKeys))
+         {
+            state = PROCESSING_MENU;
+            input.speak(PROCESSING_MENU_TEXT);
+         }
+         else
+            input.speak("Incorrect passcode. Try again!");
+         
+         accumulatedKeys = "";
       }
       
-      else if (key.equals("Employee"))
+      else if (key.equals("Manager"))
       {
           
       }
@@ -135,10 +108,10 @@ public class Connection
       @param key the phone key pressed by the user
    */
    private void changePasscode(String key) //maybe keep this?
-   {
+   {       
       if (key.equals("#"))
       {
-         currentCart.setPasscode(accumulatedKeys);
+         currentTicket.setPasscode(accumulatedKeys);
          state = WELCOME;
          input.speak(WELCOME_TEXT);
          accumulatedKeys = "";
@@ -155,7 +128,14 @@ public class Connection
    {
       if (key.equals("1"))
       {
-         
+          Sandwich s = null; 
+          currentFood = s;
+          state = ORDER_OPT_MENU;         //unnecessary if not using orderOptMenu function below
+          input.speak(SANDWICH_MENU_TEXT);            
+          if (key.equals("1"))
+          {
+              s.getSize();              //need to change size here
+          }
       }
       else if (key.equals("2"))
       {
@@ -170,6 +150,39 @@ public class Connection
          
       }
       else if (key.equals("5"))
+      {
+         
+      }
+      
+      else
+      {
+          
+      }
+    }
+
+   /**
+      Respond to the user's selection from message menu.
+      @param key the interface key pressed by the user 
+   */
+   private void orderOptMenu(String key) //PROBABLY WONT NEED
+   {
+      if (currentFood.getType("Sandwich"))        
+      {
+                     
+      }
+      else if (currentFood.getType("Soup"))
+      {
+         
+      }
+      else if (currentFood.getType("MacNCheese"))
+      {
+         
+      }
+      else if (currentFood.getType("Salad"))
+      {
+         
+      }
+      else if (currentFood.getType("GrainBowl"))
       {
          
       }
@@ -201,7 +214,7 @@ public class Connection
     }
 
     /**
-      Delivery Menu.
+      Payment Menu.
       @param key phone key pressed by the user
    */   
     private void paymentMenu(String key)
@@ -234,33 +247,91 @@ public class Connection
       else
          accumulatedKeys += key;
     }
+
+    /**
+      Process Menu.
+      @param key phone key pressed by the user
+   */   
+    private void processMenu(String key)
+    {
+      if (key.equals("1"))
+      {         
+         
+      }
+
+      else
+         accumulatedKeys += key;
+    }
+
+    /**
+      Last Menu.
+      @param key phone key pressed by the user
+   */   
+    private void doneMenu(String key)
+    {
+      if (key.equals("1"))
+      {         
+         
+      }
+
+      else
+         accumulatedKeys += key;
+    }
     
    private OrderQueue orderq;
-   private Cart currentCart;
-   private String currentRecording;
+   private Ticket currentTicket;
+   private Interface currentFood;
    private String accumulatedKeys;
    private Input input;
    private int state;
 
    private static final int DISCONNECTED = 0;
-   private static final int CONNECTED = 1;
-   private static final int WELCOME = 2;
-   private static final int ORDER_MENU = 3;
+   private static final int WELCOME = 1;
+   private static final int ORDER_MENU = 2;
+   private static final int ORDER_OPT_MENU = 3;
    private static final int DELIVERY_MENU = 4;
    private static final int PAYMENT_MENU = 5;
    private static final int SUBMIT_MENU = 6;
-              
-   private static final String INITIAL_PROMPT = 
-         "Enter your login info.";      
+   private static final int PROCESSING_MENU = 7;
+   private static final int DONE_MENU = 8;
+   
+   private static final String WELCOME_TEXT = 
+         "Enter your login info."; 
+   
    private static final String ORDER_MENU_TEXT = 
          "Enter 1 to listen to your messages\n"
          + "Enter 2 to change your passcode\n"
          + "Enter 3 to change your greeting";
+   
+   private static final String SANDWICH_MENU_TEXT = 
+         "Select if you want a hot or cold sandwich.";
+   
+   private static final String SOUP_MENU_TEXT = 
+         "Select if you want a large or small soup.";
+
+   private static final String MAC_MENU_TEXT = 
+         "Select if you want a large or small mac and cheese.";
+
+   private static final String SALAD_MENU_TEXT = 
+         "Select if you want a large or small salad.";
+
+   private static final String GRAINBOWL_MENU_TEXT = 
+         "Select if you want a large or small salad.";
+   
    private static final String DELIVERY_MENU_TEXT = 
          "Enter 1 for Delivery\n"
          + "Enter 2 for Pickup";
+   
    private static final String PAYMENT_MENU_TEXT = 
          "Enter your credit card number, cvc, expiration date, and zip code";
+   
    private static final String SUBMIT_MENU_TEXT = 
          "Please review and submit your order.";
+   
+   private static final String PROCESSING_MENU_TEXT =
+         "Is the food done?";
+   
+   private static final String DONE_MENU_TEXT =
+         "Order Complete.";
+   
 }

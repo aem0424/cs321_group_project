@@ -11,11 +11,15 @@ package cs321project;
  */
 public class CS321Project {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-    }
+   public static void main(String[] args)
+   {
+      OrderQueue orderq = new OrderQueue(TICKET_COUNT);
+      
+      Input i = new Input();
+      Connection c = new Connection(orderq, i);
+      i.run(c);
+   }
+
+   private static final int TICKET_COUNT = 20;
     
 }
