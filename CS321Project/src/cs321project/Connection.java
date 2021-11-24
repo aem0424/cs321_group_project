@@ -126,37 +126,75 @@ public class Connection
    */
    private void orderMenu(String key) //need to fill with order options (sandwich, etc.)
    {
-      if (key.equals("1"))
+      if (key.equals("1")) //Pick sandwich
       {
           Sandwich s = null; 
           currentFood = s;
-          state = ORDER_OPT_MENU;         //unnecessary if not using orderOptMenu function below
-          input.speak(SANDWICH_MENU_TEXT);            
+          //state = ORDER_OPT_MENU;         //unnecessary if not using orderOptMenu function below
+          input.speak(SANDWICH_MENU_TEXT);  //pick if you want a hot or cold sandwich          
           if (key.equals("1"))
           {
-              s.getSize();              //need to change size here
+              s.getSize("HOT");              //need to pick hot here 
+          }
+          else if (key.equals("2"))
+          {
+              s.getSize("COLD");              //need to pick cold here
           }
       }
-      else if (key.equals("2"))
+      else if (key.equals("2")) //Pick soup
       {
-         
+          Soup sp = null; 
+          currentFood = sp;
+          //state = ORDER_OPT_MENU;         //unnecessary if not using orderOptMenu function below
+          input.speak(SOUP_MENU_TEXT);  //pick if you want a hot or cold sandwich          
+          if (key.equals("1"))
+          {
+              sp.getSize("LARGE");              //need to pick large here
+          }
+          else if (key.equals("2"))
+          {
+              sp.getSize("SMALL");              //need to pick small here
+          }
       }
       else if (key.equals("3"))
       {
-         
+          MacNCheese mc = null; 
+          currentFood = mc;
+          //state = ORDER_OPT_MENU;         //unnecessary if not using orderOptMenu function below
+          input.speak(MAC_MENU_TEXT);  //pick if you want a hot or cold sandwich          
+          if (key.equals("1"))
+          {
+              mc.getSize("LARGE");              //need to pick large here
+          }
+          else if (key.equals("2"))
+          {
+              mc.getSize("SMALL");              //need to pick small here
+          }
       }
-      else if (key.equals("4"))
+      else if (key.equals("4")) //Pick salad
       {
-         
+          Salad sa = null; 
+          currentFood = sa;
+          //state = ORDER_OPT_MENU;         //unnecessary if not using orderOptMenu function below
+          input.speak(SALAD_MENU_TEXT);  //pick if you want a hot or cold sandwich          
+          if (key.equals("1"))
+          {
+              sa.getSize("HALF");              //need to pick half here
+          }
+          else if (key.equals("2"))
+          {
+              sa.getSize("WHOLE");              //need to pick whole here
+          }
       }
-      else if (key.equals("5"))
+      else if (key.equals("5")) //Pick grainbowl
       {
-         
+          GrainBowl g = null; 
+          currentFood = g;
       }
       
       else
       {
-          
+          input.speak("Please enter a valid option");
       }
     }
 
@@ -164,6 +202,8 @@ public class Connection
       Respond to the user's selection from message menu.
       @param key the interface key pressed by the user 
    */
+   
+   /**
    private void orderOptMenu(String key) //PROBABLY WONT NEED
    {
       if (currentFood.getType("Sandwich"))        
@@ -192,6 +232,7 @@ public class Connection
           
       }
     }
+   */
    
     /**
       Delivery Menu.
@@ -199,7 +240,7 @@ public class Connection
    */   
     private void deliveryMenu(String key)
     {
-      if (key.equals("1"))
+      if (key.equals("1")) //Delivery
       {         
          
       }
@@ -313,9 +354,6 @@ public class Connection
          "Select if you want a large or small mac and cheese.";
 
    private static final String SALAD_MENU_TEXT = 
-         "Select if you want a large or small salad.";
-
-   private static final String GRAINBOWL_MENU_TEXT = 
          "Select if you want a large or small salad.";
    
    private static final String DELIVERY_MENU_TEXT = 

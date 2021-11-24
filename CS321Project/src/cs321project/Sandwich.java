@@ -22,13 +22,29 @@ public abstract class Sandwich implements Interface {
     }
     
     @Override
-    public int getType() {
-        return 0; // change this once the other classes are completed
+    public int getType(String aType) {
+        return 1; // change this once the other classes are completed
     }
     
-
-    public int GetSize(){
-        return 0; //channge this once other classes are completed
+    @Override
+    public int getSize(String aSize) {
+        if (Size.HOT.toString().equals(aSize))
+        {
+            size = Size.HOT;
+            return 1;
+        }
+        
+        else if (Size.COLD.toString().equals(aSize))
+        {
+            size = Size.COLD;
+            return 2;
+        }
+        
+        else 
+        {
+            return 0;           //throw exception here?
+        }
+        
     }
  
     @Override
@@ -40,16 +56,13 @@ public abstract class Sandwich implements Interface {
          return name;
     }
     
-    @Override
-    public int getSize() {
-        throw new UnsupportedOperationException("Not supported yet."); 
-    }
     //PRIVATE VARIABLES
-private float price;
-Type type = Type.SANDWICH;
-private String name;
+    private float price;
+    Type type = Type.SANDWICH;
+    Size size;
+    private String name;
 
-private enum Type { SANDWICH } ;
-private enum Size { HALF, WHOLE };
+    private enum Type { SANDWICH } ;
+    private enum Size { HOT, COLD };
 
 }
