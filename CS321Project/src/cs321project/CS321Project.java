@@ -16,6 +16,8 @@ public class CS321Project {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        
+        new Interface();
     }
     
 }
