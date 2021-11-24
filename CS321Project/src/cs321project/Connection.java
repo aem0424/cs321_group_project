@@ -60,14 +60,22 @@ public class Connection
       input.speak(WELCOME_TEXT);
    }
 
+      /**
+      Record voice.
+      @param voice voice spoken by the user
+   */
+   public void record(String voice)
+   {
+      if (state == RECORDING || state == CHANGE_GREETING) currentRecording += voice;
+   }
+   
    /**
       Try to log in the user.
       @param key the phone key pressed by the user
    */
    private void welcomeMenu(String key)   //need to differentiate between users from xml storage file
    {                                //incomplete
-      state = WELCOME;
-      
+    
       if (key.equals("Customer"))
       {
          if (currentTicket.checkPasscode(accumulatedKeys))
@@ -102,23 +110,6 @@ public class Connection
       else
          accumulatedKeys += key;
    }
-   
-   /**
-      Change pass code.
-      @param key the phone key pressed by the user
-   */
-   private void changePasscode(String key) //maybe keep this?
-   {       
-      if (key.equals("#"))
-      {
-         currentTicket.setPasscode(accumulatedKeys);
-         state = WELCOME;
-         input.speak(WELCOME_TEXT);
-         accumulatedKeys = "";
-      }
-      else
-         accumulatedKeys += key;
-   }
 
    /**
       Respond to the user's selection from message menu.
@@ -126,11 +117,11 @@ public class Connection
    */
    private void orderMenu(String key) //need to fill with order options (sandwich, etc.)
    {
+       
       if (key.equals("1")) //Pick sandwich
       {
           Sandwich s = null; 
           currentFood = s;
-          //state = ORDER_OPT_MENU;         //unnecessary if not using orderOptMenu function below
           input.speak(SANDWICH_MENU_TEXT);  //pick if you want a hot or cold sandwich          
           if (key.equals("1"))
           {
@@ -145,7 +136,6 @@ public class Connection
       {
           Soup sp = null; 
           currentFood = sp;
-          //state = ORDER_OPT_MENU;         //unnecessary if not using orderOptMenu function below
           input.speak(SOUP_MENU_TEXT);  //pick if you want a hot or cold sandwich          
           if (key.equals("1"))
           {
@@ -160,7 +150,6 @@ public class Connection
       {
           MacNCheese mc = null; 
           currentFood = mc;
-          //state = ORDER_OPT_MENU;         //unnecessary if not using orderOptMenu function below
           input.speak(MAC_MENU_TEXT);  //pick if you want a hot or cold sandwich          
           if (key.equals("1"))
           {
@@ -175,7 +164,6 @@ public class Connection
       {
           Salad sa = null; 
           currentFood = sa;
-          //state = ORDER_OPT_MENU;         //unnecessary if not using orderOptMenu function below
           input.speak(SALAD_MENU_TEXT);  //pick if you want a hot or cold sandwich          
           if (key.equals("1"))
           {
@@ -186,12 +174,17 @@ public class Connection
               sa.getSize("WHOLE");              //need to pick whole here
           }
       }
+      
       else if (key.equals("5")) //Pick grainbowl
       {
           GrainBowl g = null; 
           currentFood = g;
       }
       
+      else if (key.equals("6")) //Finish Order
+      {
+          state = DELIVERY_MENU;
+      }
       else
       {
           input.speak("Please enter a valid option");
@@ -242,16 +235,29 @@ public class Connection
     {
       if (key.equals("1")) //Delivery
       {         
-         
+          Delivery d = null; 
+          currentOrder = d;
+          input.speak(DELIVERY_OPT_MENU_TEXT);  //enter address         
+          if (key.equals("1"))
+          {
+                            //need to take address here 
+              state = PAYMENT_MENU;
+          }
+          else 
+          {
+                       
+          }
       }
       
-      else if (key.equals("2"))
+      else if (key.equals("2")) //Pickup
       {
+          Pickup p = null; 
+          currentOrder = p; //Do we need to do anything else for pickup?
           
       }
       
       else
-         accumulatedKeys += key;
+         input.speak("Enter a valid option.");
     }
 
     /**
@@ -260,18 +266,17 @@ public class Connection
    */   
     private void paymentMenu(String key)
     {
-      if (key.equals("1"))
-      {         
-         
-      }
-      
-      else if (key.equals("2"))
-      {
-          
-      }
-      
-      else
-         accumulatedKeys += key;
+        Payment p = new Payment();
+        currentPayment = p;
+        long ccnum = 0;
+        int cvc = 0;
+        int exp = 0;
+        int zip = 0;
+        
+        input.speak(PAYMENT_MENU_TEXT);
+        
+        PaymentInfo pi = new PaymentInfo(ccnum, cvc, exp, zip);
+        p.checkInfo(pi);
     }
 
     /**
@@ -322,6 +327,8 @@ public class Connection
    private OrderQueue orderq;
    private Ticket currentTicket;
    private Interface currentFood;
+   private OType currentOrder;
+   private Payment currentPayment;
    private String accumulatedKeys;
    private Input input;
    private int state;
@@ -359,6 +366,9 @@ public class Connection
    private static final String DELIVERY_MENU_TEXT = 
          "Enter 1 for Delivery\n"
          + "Enter 2 for Pickup";
+
+   private static final String DELIVERY_OPT_MENU_TEXT = 
+         "Enter the address for delivery.";   
    
    private static final String PAYMENT_MENU_TEXT = 
          "Enter your credit card number, cvc, expiration date, and zip code";
