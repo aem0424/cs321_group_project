@@ -34,12 +34,12 @@ public class Connection
          welcomeMenu(key);
       else if (state == ORDER_MENU)
          orderMenu(key);
-      else if (state == ORDER_OPT_MENU)
-         orderOptMenu(key);
+//      else if (state == ORDER_OPT_MENU)
+//         orderOptMenu(key);
       else if (state == DELIVERY_MENU)
          deliveryMenu(key);
-      else if (state == PAYMENT_MENU)
-         paymentMenu(key);
+//      else if (state == PAYMENT_MENU)
+//         paymentMenu(key);
       else if (state == SUBMIT_MENU)
          submitMenu(key);
       else if (state == PROCESSING_MENU)
@@ -48,13 +48,18 @@ public class Connection
          doneMenu(key);
    }
 
+   public void enterInfo(long ccnum, int cvc, int exp, int zip)
+   {
+       paymentMenu(ccnum, cvc, exp, zip);
+   }
+   
    /**
       Reset the connection to the initial state and prompt
       for login
    */
    private void resetConnection()
    {
-      currentFood = "";
+      currentFood = null;
       accumulatedKeys = "";
       state = WELCOME;
       input.speak(WELCOME_TEXT);
@@ -125,11 +130,11 @@ public class Connection
           input.speak(SANDWICH_MENU_TEXT);  //pick if you want a hot or cold sandwich          
           if (key.equals("1"))
           {
-              s.getSize("HOT");              //need to pick hot here 
+              s.setSize("HOT");              //need to pick hot here 
           }
           else if (key.equals("2"))
           {
-              s.getSize("COLD");              //need to pick cold here
+              s.setSize("COLD");              //need to pick cold here
           }
       }
       else if (key.equals("2")) //Pick soup
@@ -139,11 +144,11 @@ public class Connection
           input.speak(SOUP_MENU_TEXT);  //pick if you want a hot or cold sandwich          
           if (key.equals("1"))
           {
-              sp.getSize("LARGE");              //need to pick large here
+              sp.setSize("LARGE");              //need to pick large here
           }
           else if (key.equals("2"))
           {
-              sp.getSize("SMALL");              //need to pick small here
+              sp.setSize("SMALL");              //need to pick small here
           }
       }
       else if (key.equals("3"))
@@ -153,11 +158,11 @@ public class Connection
           input.speak(MAC_MENU_TEXT);  //pick if you want a hot or cold sandwich          
           if (key.equals("1"))
           {
-              mc.getSize("LARGE");              //need to pick large here
+              mc.setSize("LARGE");              //need to pick large here
           }
           else if (key.equals("2"))
           {
-              mc.getSize("SMALL");              //need to pick small here
+              mc.setSize("SMALL");              //need to pick small here
           }
       }
       else if (key.equals("4")) //Pick salad
@@ -167,11 +172,11 @@ public class Connection
           input.speak(SALAD_MENU_TEXT);  //pick if you want a hot or cold sandwich          
           if (key.equals("1"))
           {
-              sa.getSize("HALF");              //need to pick half here
+              sa.setSize("HALF");              //need to pick half here
           }
           else if (key.equals("2"))
           {
-              sa.getSize("WHOLE");              //need to pick whole here
+              sa.setSize("WHOLE");              //need to pick whole here
           }
       }
       
@@ -264,7 +269,7 @@ public class Connection
       Payment Menu.
       @param key phone key pressed by the user
    */   
-    private void paymentMenu(String key)
+    private void paymentMenu(long ccnum, int cvc, int exp, int zip)        //need to collect data from user
     {
         Payment p = new Payment();
         currentPayment = p;
@@ -275,8 +280,14 @@ public class Connection
         
         input.speak(PAYMENT_MENU_TEXT);
         
-        PaymentInfo pi = new PaymentInfo(ccnum, cvc, exp, zip);
-        p.checkInfo(pi);
+        if (key.equals("1"))  //If enter button is pushed
+        {
+            ccnum = (long) this.accumulatedKeys.;
+            PaymentInfo pi = new PaymentInfo(ccnum, cvc, exp, zip);
+            p.checkInfo(pi);
+        }
+        
+        
     }
 
     /**

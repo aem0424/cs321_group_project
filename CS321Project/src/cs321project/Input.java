@@ -44,6 +44,8 @@ public class Input {
          if (input == null) return;
          if (input.equalsIgnoreCase("H"))
             c.hangup();
+         else if (input.equals("77"))
+            c.paymentMenu();
          else if (input.equalsIgnoreCase("Q"))
             more = false;
          else if (input.length() == 1

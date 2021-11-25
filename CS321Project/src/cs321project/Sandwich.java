@@ -28,13 +28,12 @@ public abstract class Sandwich implements Interface {
     
     @Override
     public int getSize(String aSize) {
-        if (Size.HOT.toString().equals(aSize))
+        if (size == Size.HOT)
         {
-            size = Size.HOT;
             return 1;
         }
         
-        else if (Size.COLD.toString().equals(aSize))
+        else if (size == Size.COLD)
         {
             size = Size.COLD;
             return 2;
@@ -54,6 +53,25 @@ public abstract class Sandwich implements Interface {
          else 
              name = "tba";
          return name;
+    }
+    
+    @Override
+    public void setSize(String aSize) {
+        if (Size.HOT.toString().equals(aSize))
+        {
+            size = Size.HOT;
+        }
+        
+        else if (Size.COLD.toString().equals(aSize))
+        {
+            size = Size.COLD;
+        }
+        
+        else 
+        {
+            
+        }
+        
     }
     
     //PRIVATE VARIABLES
