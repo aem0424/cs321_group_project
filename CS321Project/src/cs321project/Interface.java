@@ -15,7 +15,7 @@ public interface Interface {
     float getPrice(); // Returns the price of the item (float by default)
     void setPrice(float aPrice); // Sets the price of an item
     void setSize(String aSize); // Sets the item's size
-    int getType(String aType); // Returns the item's type if applicable
-    int getSize(String aSize); // Returns the item's size, corresponding to an int value
+    int getType(); // Returns the item's type if applicable
+    int getSize(); // Returns the item's size, corresponding to an int value
     String getName(); // Returns the name of the menu item; type determines the name for some (we may need this)
 } // END OF FILE

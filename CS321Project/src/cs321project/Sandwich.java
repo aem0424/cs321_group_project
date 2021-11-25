@@ -22,12 +22,12 @@ public abstract class Sandwich implements Interface {
     }
     
     @Override
-    public int getType(String aType) {
+    public int getType() {
         return 1; // change this once the other classes are completed
     }
     
     @Override
-    public int getSize(String aSize) {
+    public int getSize() {
         if (size == Size.HOT)
         {
             return 1;
@@ -35,7 +35,6 @@ public abstract class Sandwich implements Interface {
         
         else if (size == Size.COLD)
         {
-            size = Size.COLD;
             return 2;
         }
         
