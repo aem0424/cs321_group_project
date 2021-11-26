@@ -15,7 +15,7 @@ This is a very early version of the SANDWICH class. It will be added onto and
 revised later, and will get a proper description then. 
  */
 
-public abstract class Sandwich implements Interface {
+public abstract class Sandwich implements Food {
     @Override
     public float getPrice(){
         return price; // enter a calculation here

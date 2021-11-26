@@ -15,7 +15,7 @@ public class CS321Project {
    {
       OrderQueue orderq = new OrderQueue(TICKET_COUNT);
       
-      Input i = new Input();
+      Interface i = new Interface();
       Connection c = new Connection(orderq, i);
       i.run(c);
    }

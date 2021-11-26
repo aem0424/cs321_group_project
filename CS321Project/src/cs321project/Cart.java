@@ -12,18 +12,19 @@ import java.util.ArrayList;
 public class Cart {
     
     public Cart() {
-        queue = new ArrayList<FoodItem>();
+        queue = new ArrayList<Food>();
+
     }
     
     public void clear() {
         queue.clear();
     }
     
-    public FoodItem remove() {
+    public Food remove() {
         return queue.remove(0);
     }
     
-    public void add(FoodItem item) {
+    public void add(Food item) {
         queue.add(item);   
     }
     
@@ -31,5 +32,12 @@ public class Cart {
         return queue.size();
     }
     
-    private ArrayList<FoodItem> queue;
+    public String displayFood()
+    {
+        String food = queue.toString();
+        return food;
+    }
+    
+    private ArrayList<Food> queue;
+
 }

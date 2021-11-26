@@ -11,7 +11,7 @@ revised later, and will get a proper description then.
 */
 
 
-public class GrainBowl implements Interface {
+public class GrainBowl implements Food {
     @Override
     public float getPrice() {
         return price; // Put a calculation here later
@@ -28,11 +28,6 @@ public class GrainBowl implements Interface {
     }
     
     @Override
-    public int[] getExtras() {
-        return extras;        
-    }
-    
-    @Override
     public String getName() {
         if (type == Type.GRAIN)
             name = "Grain Bowl";
@@ -41,12 +36,15 @@ public class GrainBowl implements Interface {
         return name;
     }
     
+    @Override
+    public void setSize(String aSize) {
+        
+    }
     
     // PRIVATE VARIABLES
     private float price;
     Type type = Type.GRAIN;
     Size size = Size.LARGE;
-    private int[] extras = new int[0]; // Protoypical; will likely be changed
     private String name; // Can be defined since it only has one possible name
     private enum Type { GRAIN }; // Not really a variable, but defined here for organization's sake
     private enum Size { LARGE }; // Only size possible (enum in case more options are added later)

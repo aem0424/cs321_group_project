@@ -17,7 +17,7 @@ public class Connection
       @param o a OrderQueue object
       @param i a Input object
    */
-   public Connection(OrderQueue o, Input i)
+   public Connection(OrderQueue o, Interface i)
    {
       orderq = o;
       input = i;
@@ -66,12 +66,15 @@ public class Connection
    }
 
       /**
-      Record voice.
-      @param voice voice spoken by the user
+      Record user input.
+      @param voice input typed by the user
    */
-   public void record(String voice)
+   public void record(String input)
    {
-      if (state == RECORDING || state == CHANGE_GREETING) currentRecording += voice;
+      if (state == PAYMENT_MENU) 
+      {
+          currentRecording += input;
+      }
    }
    
    /**
@@ -109,11 +112,11 @@ public class Connection
       
       else if (key.equals("Manager"))
       {
-          
+          //Manager should be able to see all tickets, does that mean we make new "manager menu"?
       }
       
       else
-         accumulatedKeys += key;
+          input.speak("Please enter a valid username.");
    }
 
    /**
@@ -277,8 +280,22 @@ public class Connection
         currentPayment = p;
         
         PaymentInfo pi = new PaymentInfo(ccnum, cvc, exp, zip);
-        p.checkInfo(pi);
         
+        if (p.checkInfo(pi) == true)
+        {
+            state = SUBMIT_MENU;
+            input.speak(SUBMIT_MENU_TEXT);
+        }
+        
+        else if (p.checkInfo(pi) == false)
+        {
+            input.speak("Input valid information.");
+        }
+        
+        else 
+        {
+            input.speak("Error with payment info check.");
+        }
     }
 
     /**
@@ -287,13 +304,19 @@ public class Connection
    */   
     private void submitMenu(String key)
     {
-      if (key.equals("1"))
-      {         
-         
-      }
+        
+        currentTicket.displayTicket();
+        
+        if (key.equals("1")) //Submit button pressed
+        {         
+            state = DONE_MENU;
+            input.speak(DONE_MENU_TEXT);
+        }
 
-      else
-         accumulatedKeys += key;
+        else
+        {
+            input.speak("Invalid input.");
+        }
     }
 
     /**
@@ -304,11 +327,13 @@ public class Connection
     {
       if (key.equals("1"))
       {         
-         
+          //need to work on this
       }
 
       else
-         accumulatedKeys += key;
+      {
+          
+      }
     }
 
     /**
@@ -317,22 +342,29 @@ public class Connection
    */   
     private void doneMenu(String key)
     {
-      if (key.equals("1"))
-      {         
-         
-      }
+        
+        currentTicket.displayTicket();
+        
+        if (key.equals("1")) //Close button?
+        {         
+            resetConnection();
+        }
 
-      else
-         accumulatedKeys += key;
+        else
+        {
+            input.speak("Enter a valid option.");
+        }
+        
     }
     
    private OrderQueue orderq;
    private Ticket currentTicket;
-   private Interface currentFood;
+   private Food currentFood;
    private OType currentOrder;
    private Payment currentPayment;
    private String accumulatedKeys;
-   private Input input;
+   private Interface input;
+   private String currentRecording;
    private int state;
 
    private static final int DISCONNECTED = 0;
