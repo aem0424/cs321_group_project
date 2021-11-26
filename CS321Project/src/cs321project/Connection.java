@@ -247,10 +247,11 @@ public class Connection
           {
                             //need to take address here 
               state = PAYMENT_MENU;
+              input.speak(PAYMENT_MENU_TEXT);
           }
           else 
           {
-                       
+              input.speak("Enter a valid address.");
           }
       }
       
@@ -258,7 +259,8 @@ public class Connection
       {
           Pickup p = null; 
           currentOrder = p; //Do we need to do anything else for pickup?
-          
+          state = PAYMENT_MENU;
+          input.speak(PAYMENT_MENU_TEXT);
       }
       
       else
@@ -273,20 +275,9 @@ public class Connection
     {
         Payment p = new Payment();
         currentPayment = p;
-        long ccnum = 0;
-        int cvc = 0;
-        int exp = 0;
-        int zip = 0;
         
-        input.speak(PAYMENT_MENU_TEXT);
-        
-        if (key.equals("1"))  //If enter button is pushed
-        {
-            ccnum = (long) this.accumulatedKeys.;
-            PaymentInfo pi = new PaymentInfo(ccnum, cvc, exp, zip);
-            p.checkInfo(pi);
-        }
-        
+        PaymentInfo pi = new PaymentInfo(ccnum, cvc, exp, zip);
+        p.checkInfo(pi);
         
     }
 
