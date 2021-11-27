@@ -6,6 +6,8 @@ package cs321project;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.lang.System.*;
+import java.lang.System.Logger.Level;
 import javax.swing.*;
 
 /**
@@ -17,13 +19,22 @@ public class Interface {
     public Interface() {
         
         // -----------------------------Window---------------------------- 
-        JFrame window = new JFrame("Panera Bread");
+        window = new JFrame("Panera Bread");
         int X = 800; int Y = 500;
         window.setSize(X, Y);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setVisible(true);
         
-        // -----------------------------Login Screen---------------------------- 
+        layout = new CardLayout();
+        panes = new JPanel(layout);
+        panes.add(loginPanel());
+        panes.add(orderPanel());
+        
+        window.add(panes);
+        
+        window.setVisible(true);
+    }
+    
+    private JPanel loginPanel() {
         JPanel login = new JPanel();
         login.setLayout(null);
         login.setBackground(Color.LIGHT_GRAY);
@@ -45,20 +56,47 @@ public class Interface {
         loginButton.addActionListener(
             new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    login.setVisible(false);
+                    layout.next(panes);
+                    currentUsername = usernameField.getText();
+                    currentPassword = String.valueOf(passwordField.getPassword());
+                    //c.setState(CHECK_LOGIN);
                 }
             });
         login.add(loginButton);
         
-        // ----------------------------Order Screen-----------------------------
+        return login;
+    }
+    
+    private JPanel orderPanel(){
         JPanel order = new JPanel();
         order.setBackground(Color.DARK_GRAY);
         
-        //----------------------------Add Panel------------------------------------
-        
-        window.add(login);
+        return order;
     }
     
+    private void switchPanel(String s) {
+        if (s.equals("login"))
+            layout.first(panes);
+        if (s.equals("next"))
+            layout.next(panes);
+        if (s.equals("prev"))
+            layout.previous(panes);
+    }
+    
+    private String getUsername() {
+        return currentUsername;
+    }
+    
+    private String getPassword() {
+        return currentPassword;
+    }
+    
+    private JFrame window;
+    private JPanel panes;
+    private CardLayout layout;
+            
+    String currentUsername;
+    String currentPassword;
     //public void run (connection c) {
         
     //}
