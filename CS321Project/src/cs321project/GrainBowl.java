@@ -1,4 +1,4 @@
-package cs321_project; // Change this, if needed
+package cs321project; // Change this, if needed
 /**
  CS 321-03 GROUP PROJECT (PANERA BREAD)
  GRAINBOWL CLASS
@@ -14,22 +14,18 @@ revised later, and will get a proper description then.
 public class GrainBowl implements Interface {
     @Override
     public float getPrice() {
+        price = Constants.PRICE_DATABASE.seekPrice(4,1); // Can search for this since it only has one possible price
         return price; // Put a calculation here later
     }
     
     @Override
     public int getType() {
-        return 0; // May change this later once other classes are completed
+        return 4; // May change this later once other classes are completed
     }
     
     @Override
     public int getSize() {
-        return 0; // Same as above
-    }
-    
-    @Override
-    public int[] getExtras() {
-        return extras;        
+        return 1; // Same as above
     }
     
     @Override
@@ -46,7 +42,6 @@ public class GrainBowl implements Interface {
     private float price;
     Type type = Type.GRAIN;
     Size size = Size.LARGE;
-    private int[] extras = new int[0]; // Protoypical; will likely be changed
     private String name; // Can be defined since it only has one possible name
     private enum Type { GRAIN }; // Not really a variable, but defined here for organization's sake
     private enum Size { LARGE }; // Only size possible (enum in case more options are added later)
