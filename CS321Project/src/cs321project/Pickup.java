@@ -11,4 +11,11 @@ package cs321project;
  */
 public abstract class Pickup implements OType {
     
+    @Override
+    public String getType()
+    {
+        return "Pickup";
+        
+    }
+    
 }

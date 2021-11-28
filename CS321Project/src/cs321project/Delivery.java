@@ -10,5 +10,12 @@ package cs321project;
  * @author User
  */
 public abstract class Delivery implements OType {
+ 
+    @Override
+    public String getType()
+    {
+        return "Delivery";
+        
+    }
     
 }

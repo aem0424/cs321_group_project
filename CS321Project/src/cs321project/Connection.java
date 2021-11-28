@@ -63,6 +63,10 @@ public class Connection
       accumulatedKeys = "";
       state = WELCOME;
       input.speak(WELCOME_TEXT);
+      currentCart = new Cart();
+      currentPrice = new Price();
+      currentTicket = new Ticket(currentCart, currentPrice, currentOrder);      
+      
    }
 
       /**
@@ -153,6 +157,8 @@ public class Connection
           {
               sp.setSize("SMALL");              //need to pick small here
           }
+          
+          currentCart.add(currentFood);
       }
       else if (key.equals("3"))
       {
@@ -167,6 +173,8 @@ public class Connection
           {
               mc.setSize("SMALL");              //need to pick small here
           }
+          
+          currentCart.add(currentFood);
       }
       else if (key.equals("4")) //Pick salad
       {
@@ -181,17 +189,27 @@ public class Connection
           {
               sa.setSize("WHOLE");              //need to pick whole here
           }
+          
+          currentCart.add(currentFood);
       }
       
       else if (key.equals("5")) //Pick grainbowl
       {
           GrainBowl g = null; 
           currentFood = g;
+          
+          currentCart.add(currentFood);
       }
       
-      else if (key.equals("6")) //Finish Order
+      else if (key.equals("6")) //Delete item
+      {
+          currentCart.remove();
+      }
+      
+      else if (key.equals("7")) //Finish Order
       {
           state = DELIVERY_MENU;
+          input.speak(DELIVERY_MENU_TEXT);
       }
       else
       {
@@ -359,9 +377,11 @@ public class Connection
     
    private OrderQueue orderq;
    private Ticket currentTicket;
+   private Cart currentCart;
    private Food currentFood;
    private OType currentOrder;
    private Payment currentPayment;
+   private Price currentPrice;
    private String accumulatedKeys;
    private Interface input;
    private String currentRecording;
