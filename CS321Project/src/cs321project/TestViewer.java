@@ -30,7 +30,7 @@ public class TestViewer {
         for(int i = 0; i < Constants.MAX_ITEMS; i++)
             for(int j = 0; j < Constants.MAX_SIZES; j++)
             {
-                System.out.println("ITEM " + i + ", SIZE " + j + " PRICE: $" + Constants.PRICE_DATABASE.seekPrice(i, j));
+                System.out.println("ITEM " + i + ", SIZE " + j + " PRICE: $" + Constants.DATABASE.seekPrice(i, j));
             }
     }
 } // END OF FILE

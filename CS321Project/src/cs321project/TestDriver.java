@@ -9,10 +9,13 @@ public class TestDriver {
         TestViewer viewer = new TestViewer();
         Payment process = new Payment();
         GrainBowl testFood = new GrainBowl();
-        Constants.PRICE_DATABASE.findPrices();
+        Constants.DATABASE.initializeData();
         viewer.printPrices();
         float testPrice = testFood.getPrice();
         System.out.println("TEST PRICE IS: $" + testPrice); // Demonstrates that the price array works
+        System.out.println("ADMIN USER + PASS: " + Constants.DATABASE.admins[0][0] + ", " + Constants.DATABASE.admins[0][1]);
+        System.out.println("STAFF USER + PASS: " + Constants.DATABASE.staff[0][0] + ", " + Constants.DATABASE.staff[0][1]);
+        System.out.println("CSTMR USER + PASS: " + Constants.DATABASE.customers[0][0] + ", " + Constants.DATABASE.customers[0][1]);
         
         boolean validity; // Used to check if payment info is valid
         // BELOW 4 VALUES ARE FOR TESTING THE PAYMENT CLASS

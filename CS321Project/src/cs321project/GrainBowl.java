@@ -14,7 +14,7 @@ revised later, and will get a proper description then.
 public class GrainBowl implements Interface {
     @Override
     public float getPrice() {
-        price = Constants.PRICE_DATABASE.seekPrice(4,1); // Can search for this since it only has one possible price
+        price = Constants.DATABASE.seekPrice(4,1); // Can search for this since it only has one possible price
         return price; // Put a calculation here later
     }
     
