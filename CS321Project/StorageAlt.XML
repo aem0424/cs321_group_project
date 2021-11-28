@@ -1,21 +1,11 @@
 <?xml version = "1.0" encoding = "UTF-8" standalone = "yes" ?>
-<info>
+<Info>
     <User-Info>
-		<User>
-			<Role>Manager</Role>
-			<Username>Admin</Username>
-			<Password>Panera</Password>
-		</User>
-		<User>
-			<Role>Employee</Role>
-			<Username>Staff</Username>
-			<Password>Work</Password>
-		</User>
-		<User>
-			<Role>Customer</Role>
-			<Username>Cust</Username>
-			<Password>Password</Password>
-		</User>
+		<Users>
+			<User role = "Manager" username = "Admin" password = "Panera" />
+                        <User role = "Employee" username = "Staff" password = "Work" />
+                        <User role = "Customer" username = "Cust" password = "Password" />
+		</Users>
     </User-Info>
     <Food-Data>
 	<Sandwich>
@@ -53,4 +43,4 @@
                   </Size>
 	</GrainBowl>
     </Food-Data>
-</info>
+</Info>
