@@ -189,9 +189,10 @@ public class Interface {
             
     private String currentUsername;
     private String currentPassword;
-    //public void run (connection c) {
-        
-    //}
     
-    //private Connection connect;
+    public void run (Connection c) {
+        connect = c;
+    }
+    
+    private Connection connect;
 }

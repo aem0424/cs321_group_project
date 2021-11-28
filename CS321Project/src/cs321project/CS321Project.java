@@ -17,7 +17,10 @@ public class CS321Project {
     public static void main(String[] args) {
         // TODO code application logic here
         
-        new Interface();
-    }
-    
+        OrderQueue orders = new OrderQueue();
+        
+        Interface GUI = new Interface();
+        Connection c = new Connection(orders, GUI);
+        GUI.run(c);
+    }   
 }
