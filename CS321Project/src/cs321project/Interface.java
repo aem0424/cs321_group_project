@@ -25,9 +25,9 @@ public class Interface {
         layout = new CardLayout();
         panes = new JPanel(layout);
         panes.add(loginPanel());
-        panes.add(credentialsApproved());
-        panes.add(credentialsDenied());
-        panes.add(orderPanel());
+//        panes.add(credentialsApproved());
+//        panes.add(credentialsDenied());
+//        panes.add(orderPanel());
         
         window.add(panes);
         
@@ -60,6 +60,8 @@ public class Interface {
         loginButton.addActionListener(
             new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
+                    panes.add(credentialsApproved());
+                    window.add(panes);
                     switchPanel("next");
                     currentUsername = usernameField.getText();
                     currentPassword = String.valueOf(passwordField.getPassword());
