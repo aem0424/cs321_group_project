@@ -1,5 +1,8 @@
 <?xml version = "1.0" encoding = "UTF-8" standalone = "yes" ?>
 <Info>
+    <Totals>
+        <Total totalManagers = "1" totalEmployees = "1" totalCustomers = "1" />
+    </Totals>
     <User-Info>
 		<Users>
 			<User role = "Manager" username = "Admin" password = "Panera" />
