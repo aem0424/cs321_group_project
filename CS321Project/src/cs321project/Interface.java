@@ -207,9 +207,9 @@ public class Interface {
         return currentPassword;
     }
     
-    //public void run (Connection c) {
-    //    connect = c;
-    //}
+    public void run (Connection c) {
+        connect = c;
+    }
     
     private JFrame window;
     private JPanel panes;
@@ -219,5 +219,5 @@ public class Interface {
     private String currentPassword;
     private int orderNumber;
     
-    //private Connection connect;
+    private Connection connect;
 }
