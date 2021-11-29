@@ -162,9 +162,8 @@ public class Connection
                 input.addPanel(input.managerPanel());
                 input.setPanel("next");
            }
-           if (userType == 3){
-               throw new java.lang.RuntimeException("Invalid User Type.");
-           }
+           else
+               resetConnection();
        }
        else if (key.equals("2")) {
            resetConnection();
@@ -179,40 +178,40 @@ public class Connection
    {
       if (key.equals("1")) //Pick sandwich
       {
-          Sandwich s = null; 
+          Sandwich s = new Sandwich(); 
           currentFood = s;
-          input.addPanel(input.itemSpecificsPanel(1));
-          input.setPanel("next");  //pick if you want a hot or cold sandwich  
           state = ORDER_OPT_MENU;
+          input.addPanel(input.itemSpecificsPanel(1));
+          input.setPanel("next");  //pick if you want a hot or cold sandwich 
       }
       else if (key.equals("2")) //Pick soup
       {
-          Soup sp = null; 
+          Soup sp = new Soup(); 
           currentFood = sp;
+          state = ORDER_OPT_MENU;
           input.addPanel(input.itemSpecificsPanel(2));
           input.setPanel("next");  //pick if you want a hot or cold sandwich          
-          state = ORDER_OPT_MENU;
       }
       else if (key.equals("3"))
       {
-          MacNCheese mc = null; 
+          MacNCheese mc = new MacNCheese(); 
           currentFood = mc;
-          input.addPanel(input.itemSpecificsPanel(2));
-          input.setPanel("next");  //pick if you want a hot or cold sandwich          
           state = ORDER_OPT_MENU;
+          input.addPanel(input.itemSpecificsPanel(3));
+          input.setPanel("next");  //pick if you want a hot or cold sandwich          
       }
       else if (key.equals("4")) //Pick salad
       {
-          Salad sa = null; 
+          Salad sa = new Salad(); 
           currentFood = sa;
-          input.addPanel(input.itemSpecificsPanel(2));
-          input.setPanel("next");  //pick if you want a hot or cold sandwich          
           state = ORDER_OPT_MENU;
+          input.addPanel(input.itemSpecificsPanel(4));
+          input.setPanel("next");  //pick if you want a hot or cold sandwich          
       }
       
       else if (key.equals("5")) //Pick grainbowl
       {
-          GrainBowl g = null; 
+          GrainBowl g = new GrainBowl(); 
           currentFood = g;
           
           currentCart.add(currentFood);
@@ -243,7 +242,7 @@ public class Connection
    
    private void orderOptMenu(String key) 
    {
-      if (currentFood.getType() == 1)   //Sandwich        
+      if (currentFood.getType() == 0)   //Sandwich        
       {
         if (key.equals("1")) 
         {
@@ -274,9 +273,12 @@ public class Connection
         
         currentCart.add(currentFood);
         state = ORDER_MENU;
+        input.addPanel(input.orderPanel());
+        input.setPanel("next");
+        
       }
       
-      else if (currentFood.getType() == 2 || currentFood.getType() == 3 || currentFood.getType() == 4)   //Soup, Mac, or Salad        
+      else if (currentFood.getType() == 1 || currentFood.getType() == 2 || currentFood.getType() == 3)   //Soup, Mac, or Salad        
       {
         if (key.equals("1")) 
         {
@@ -293,6 +295,8 @@ public class Connection
         
         currentCart.add(currentFood);
         state = ORDER_MENU;
+        input.addPanel(input.orderPanel());
+        input.setPanel("next");
       }
       
       else

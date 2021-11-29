@@ -59,10 +59,6 @@ public class Interface {
         loginButton.addActionListener(
             new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    //panes.add(credentialsPanel(false));
-                    //window.add(panes);
-                    //addPanel(credentialsPanel(false));
-                    //layout.next(panes);
                     user = usernameField.getText();
                     pass = String.valueOf(passwordField.getPassword());
                     connect.dial("1");
@@ -125,17 +121,20 @@ public class Interface {
         // Make new panel.
         JPanel order = new JPanel();
         order.setLayout(new BorderLayout());
-        order.setBackground(Color.DARK_GRAY);
+        order.setBackground(Color.LIGHT_GRAY);
         
         JPanel oNumberPanel = new JPanel();
-        oNumberPanel.setLayout(new BorderLayout());
-        oNumberPanel.add(new JLabel("Order #" + connect.getOrderNumber()),BorderLayout.NORTH);
-        order.a
+        oNumberPanel.setBackground(Color.LIGHT_GRAY);
+        JLabel oNumberLabel = new JLabel("Order #" + connect.getOrderNumber());
+        oNumberLabel.setBounds(350,50,100,50);
+        oNumberPanel.add(oNumberLabel);
+        oNumberPanel.setSize(800, 300);
+        order.add(oNumberPanel, BorderLayout.NORTH);
         
         String[] keyLabels = {"Sandwich","Soup","Mac'N'Cheese","Salad","Grain Bowl"};
         JPanel keyPanel = new JPanel();
         keyPanel.setLayout(new GridLayout(4, 3));
-        keyPanel.setBackground(Color.DARK_GRAY);
+        keyPanel.setBackground(Color.LIGHT_GRAY);
         for (int i = 0; i < 5; i++)
         {
             final String label = keyLabels[i];
@@ -153,6 +152,28 @@ public class Interface {
         }
         order.add(keyPanel, BorderLayout.CENTER);
         
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(Color.LIGHT_GRAY);
+        JButton clearCartButton = new JButton("Clear Cart");
+        clearCartButton.setBounds(210, 100, 140, 25);
+        clearCartButton.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    connect.dial("6");
+                }
+            });
+        buttonPanel.add(clearCartButton);
+        JButton finalizeButton = new JButton("Finalize Cart");
+        finalizeButton.setBounds(360, 100, 190, 25);
+        finalizeButton.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    connect.dial("7");
+                }
+            });
+        buttonPanel.add(finalizeButton);
+        order.add(buttonPanel, BorderLayout.SOUTH);
+        
         return order;
     }
     
@@ -161,15 +182,71 @@ public class Interface {
         itemSpecs.setLayout(null);
         itemSpecs.setBackground(Color.LIGHT_GRAY);
         
-//        if (i==1){
-//            
-//        } 
-//        else if (){
-//            
-//        }
-//        else if (i<=){
-//            
-//        }
+        if (i==1){
+                        
+            JLabel itemText = new JLabel("What temp would you like your Sandwich?");
+            itemText.setBounds(250, 175, 300, 25);
+            itemSpecs.add(itemText);
+            
+            JButton hotButton = new JButton("Large");
+            hotButton.setBounds(225, 250, 100, 50);
+            hotButton.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    connect.dial("3");
+                }
+            });
+            itemSpecs.add(hotButton);
+            
+            JButton coldButton = new JButton("Small");
+            coldButton.setBounds(425, 250, 100, 50);
+            coldButton.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    connect.dial("4");
+                }
+            });
+            itemSpecs.add(coldButton);
+            
+
+        } 
+        else {
+            if (i==2){
+                JLabel itemText = new JLabel("What size would you like your Soup?");
+                itemText.setBounds(250, 175, 300, 25);
+                itemSpecs.add(itemText);
+            }
+            else if (i==3){
+                JLabel itemText = new JLabel("What size would you like your Mac'N'Cheese?");
+                itemText.setBounds(250, 175, 300, 25);
+                itemSpecs.add(itemText);
+            }
+            else if (i==4){
+                JLabel itemText = new JLabel("What size would you like your Salad?");
+                itemText.setBounds(250, 175, 300, 25);
+                itemSpecs.add(itemText);
+            }
+            
+            JButton hotButton = new JButton("Large");
+            hotButton.setBounds(225, 250, 100, 50);
+            hotButton.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    connect.dial("1");
+                }
+            });
+            itemSpecs.add(hotButton);
+            
+            JButton coldButton = new JButton("Small");
+            coldButton.setBounds(425, 250, 100, 50);
+            coldButton.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    connect.dial("2");
+                }
+            });
+            itemSpecs.add(coldButton);
+        }
         
         return itemSpecs;
     }
@@ -179,6 +256,54 @@ public class Interface {
         deliveryOptions.setLayout(null);
         deliveryOptions.setBackground(Color.LIGHT_GRAY);
         
+        JLabel addressText = new JLabel("Address:");
+        addressText.setBounds(125, 350, 75, 25);
+        addressText.setVisible(false);
+        deliveryOptions.add(addressText);
+        
+        JTextField addressField = new JTextField();
+        addressField.setBounds(200, 350, 300, 25);
+        addressField.setVisible(false);
+        deliveryOptions.add(addressField);
+        
+        JButton submitButton = new JButton("Submit");
+        submitButton.setBounds(525, 350, 100, 25);
+        submitButton.addActionListener(
+        new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                address = addressField.getText();
+                connect.dial("1");
+            }
+        });
+        submitButton.setVisible(false);
+        deliveryOptions.add(submitButton);
+        
+        JLabel promptText = new JLabel("How would you like your food delivered?");
+        promptText.setBounds(250, 175, 300, 25);
+        deliveryOptions.add(promptText);
+        
+        JButton pickupButton = new JButton("Pickup");
+        pickupButton.setBounds(425, 250, 100, 50);
+        pickupButton.addActionListener(
+        new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                connect.dial("2");
+            }
+        });
+        deliveryOptions.add(pickupButton);
+        
+        JButton deliveryButton = new JButton("Delivery");
+        deliveryButton.setBounds(225, 250, 100, 50);
+        deliveryButton.addActionListener(
+        new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                addressText.setVisible(true);
+                addressField.setVisible(true);
+                submitButton.setVisible(true);
+            }
+        });
+        deliveryOptions.add(deliveryButton);
+            
         return deliveryOptions;
     }
     
@@ -272,6 +397,10 @@ public class Interface {
         return pass;
     }
     
+    public String getAddress() {
+        return address;
+    }
+    
     public ArrayList<Object> getPaymentInfo() {
         ArrayList<Object> info = new ArrayList<Object>();
         info.add(ccnum); info.add(cvc); info.add(exp); info.add(zip);
@@ -290,6 +419,8 @@ public class Interface {
     private int orderNumber;
     private String user;
     private String pass;
+    
+    private String address;
     
     private long ccnum;
     private int cvc; 

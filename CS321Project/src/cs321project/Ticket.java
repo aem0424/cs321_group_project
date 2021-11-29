@@ -11,10 +11,11 @@ package cs321project;
  */
 public class Ticket {
         
-   public Ticket(Cart aCart, OType o)
+   public Ticket(Cart aCart, OType o, int ticketNum)
    {
         cart = aCart;
         this.o = o;
+        this.ticketNum = ticketNum;
    }
    
    public void changeStatus(int newStatus)
@@ -48,7 +49,24 @@ public class Ticket {
        return cart.displayFood();
    }
    
+   public void setAddress(String address)
+   {
+       this.address = address;
+   }
+
+   public String getAddress()
+   {
+       return address;
+   }
+   
+   public int getTicketNumber()
+   {
+       return ticketNum;
+   }
+   
     private final Cart cart;
     private int status;
+    private String address;
     private final OType o;
+    private final int ticketNum;
 }
