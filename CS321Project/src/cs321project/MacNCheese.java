@@ -1,51 +1,69 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package cs321project;
-
+package cs321project; // Change this, if needed
 /**
  CS 321-03 GROUP PROJECT (PANERA BREAD)
- SOUP CLASS
+ MacNCheese.java
  Dr. Huaming Zhang
  CS 321-03
- November 15, 2021
+ November 28, 2021
 
-This is a very early version of the MAC N CHEESE class. It will be added onto and
-revised later, and will get a proper description then. 
- */
+This is a VERY early version of the Mac'N'Cheese class. It will be added onto and
+revised later, and will get a proper description then.
+*/
+
+
 public class MacNCheese implements Food {
     @Override
-    public float getPrice(){
-        return price; // enter a calculation here
+    public float getPrice() {
+        price = Constants.DATABASE.seekPrice(type,size);
+        return price;
     }
     
     @Override
     public int getType() {
-        return 0; // change this once the other classes are completed
-    }
-    
-    @Override
-    public String getName(){
-         if (type == Type.MACNCHEESE)
-             name = "Mac N Cheese";
-         else 
-             name = "tba";
-         return name;
+        return type; // May change this later once other classes are completed
     }
     
     @Override
     public int getSize() {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        return size; // Same as above
     }
-
     
-    //PRIVATE VARIABLES
-private float price;
-Type type = Type.MACNCHEESE;
-private String name;
-private enum Type { MACNCHEESE } ;
-private enum Size { SMALL , LARGE };
-
-}
+    @Override
+    public String getName() {
+        return name;
+    }
+    
+    @Override
+    public void setSize(int input) {
+        if (input == 0 || input == 1) // Valid sizes for this food
+            size = input;
+        else
+            System.out.println("ERROR: This size is not supported for " + getName() + ".");
+    }
+    
+    @Override
+    public int getKind()
+    {
+        return 0;
+        
+    }
+    
+    @Override
+    public String getKindName()
+    {
+        return null;
+        
+    }
+    
+    @Override
+    public void setKind(int input)
+    {
+        
+    }
+    
+    // PRIVATE VARIABLES
+    private float price = 0f;
+    private final int type = 3; // Type 1 corresponds to salad
+    private int size = 0; // Default size is 0 (small); can also be 1 (large)
+    private final String name = "Mac'n'Cheese"; // Can be defined since it only has one possible name
+} // END OF FILE

@@ -1,7 +1,7 @@
 package cs321project; // Change this, if needed
 /**
  CS 321-03 GROUP PROJECT (PANERA BREAD)
- INTERFACE CLASS
+ Food.java
  Dr. Huaming Zhang
  CS 321-03
  November 8, 2021
@@ -9,12 +9,17 @@ package cs321project; // Change this, if needed
  This class defines an interface that the menu item classes will extend; this
  will serve as a "base" for the classes it extends, all of which will need to
  define their own versions of the base functions defined below.
+ 
+ @author anthony_matthews
 */
 
 public interface Food {
     float getPrice(); // Returns the price of the item (float by default)
-    void setSize(String aSize); // Sets the item's size
-    int getType(); // Returns the item's type if applicable
+    int getType(); // Returns the item's type
     int getSize(); // Returns the item's size, corresponding to an int value
-    String getName(); // Returns the name of the menu item; type determines the name for some (we may need this)
+    String getName(); // Returns the name of the menu item
+    public int getKind();
+    public String getKindName();
+    public void setKind(int input);
+    public void setSize(int input);
 } // END OF FILE

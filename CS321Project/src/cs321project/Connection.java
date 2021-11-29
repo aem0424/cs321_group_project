@@ -31,14 +31,14 @@ public class Connection
    */
    public void dial(String key)
    {       
-      if (state == WELCOME)
-         welcomeMenu(key);
-      else if (state == ORDER_MENU)
-         orderMenu(key);
-//      else if (state == ORDER_OPT_MENU)
-//         orderOptMenu(key);
-      else if (state == DELIVERY_MENU)
-         deliveryMenu(key);
+//      if (state == WELCOME)
+//         welcomeMenu(key);
+        if (state == ORDER_MENU)
+            orderMenu(key);
+        else if (state == ORDER_OPT_MENU)
+            orderOptMenu(key);
+        else if (state == DELIVERY_MENU)
+           deliveryMenu(key);
 //      else if (state == PAYMENT_MENU)
 //         paymentMenu(key);
       else if (state == SUBMIT_MENU)
@@ -51,12 +51,14 @@ public class Connection
 
    public void welcomeInfo(String user, String pass)
    {
-       welcomeMenu(user, pass);
+        if (state == WELCOME)
+            welcomeMenu(user, pass);
    }
    
    public void paymentInfo(long ccnum, int cvc, int exp, int zip)
    {
-       paymentMenu(ccnum, cvc, exp, zip);
+       if (state == PAYMENT_MENU)
+            paymentMenu(ccnum, cvc, exp, zip);
    }
    
    /**
@@ -75,18 +77,6 @@ public class Connection
       currentTicket = new Ticket(currentCart, currentOrder);      
       
    }
-
-      /**
-      Record user input.
-      @param voice input typed by the user
-   */
-   public void record(String input)
-   {
-      if (state == PAYMENT_MENU || state == DELIVERY_MENU) 
-      {
-          currentRecording += input;
-      }
-   }
    
    /**
       Try to log in the user.
@@ -95,43 +85,45 @@ public class Connection
    private void welcomeMenu(String user, String pass)   //need to differentiate between users from xml storage file
    {                                //incomplete
     
-      Constants.DATABASE.initializeData();
+        Constants.DATABASE.initializeData();
       
-      if (Constants.DATABASE.customers[0][1].equals(pass))
-      
-      if (user.equals("Customer"))
-      {
-         if (Constants.DATABASE.customers[0][1].equals(pass)) //not sure how to make this check the password corresponding to the user
-         {
-            state = ORDER_MENU;
-            input.speak(ORDER_MENU_TEXT);
-         }
-         else
-            input.speak("Incorrect passcode. Try again!");      //need to cahnge this to match wrong password screen
-
-      }
-      
-      else if (user.equals("Employee"))
-      {
-         if (Constants.DATABASE.staff[0][1].equals(pass)) //not sure how to make this check the password corresponding to user
-         {
-            state = PROCESSING_MENU;
-            input.speak(PROCESSING_MENU_TEXT);
-         }
-         else
-            input.speak("Incorrect passcode. Try again!");
-         
-         accumulatedKeys = "";
-      }
-      
-      else if (user.equals("Manager"))
-      {
-        if (Constants.DATABASE.customers[0][1].equals(pass)) //not sure how to make this check the password corresponding to user
+        if (Constants.DATABASE.passCheck(pass)) //if password is found in database
         {
-            state = MANAGER_MENU;
-            input.speak(MANAGER_MENU_TEXT);
+            if (user.equals("Customer"))
+            {
+               if (Constants.DATABASE.customers[0][1].equals(pass)) //not sure how to make this check the password corresponding to the user
+               {
+                  state = ORDER_MENU;
+                  input.speak(ORDER_MENU_TEXT);
+               }
+               else
+                  input.speak("Incorrect passcode. Try again!");      //need to cahnge this to match wrong password screen
+
+            }
+
+            else if (user.equals("Employee"))
+            {
+               if (Constants.DATABASE.staff[0][1].equals(pass)) //not sure how to make this check the password corresponding to user
+               {
+                  state = PROCESSING_MENU;
+                  input.speak(PROCESSING_MENU_TEXT);
+               }
+               else
+                  input.speak("Incorrect passcode. Try again!");
+
+               accumulatedKeys = "";
+            }
+
+            else if (user.equals("Manager"))
+            {
+              if (Constants.DATABASE.customers[0][1].equals(pass)) //not sure how to make this check the password corresponding to user
+              {
+                  state = MANAGER_MENU;
+                  input.speak(MANAGER_MENU_TEXT);
+              }
+            }
         }
-        
+      
         else
         {
             input.speak("Incorrect passcode. Try again!");
@@ -152,74 +144,37 @@ public class Connection
        
       if (key.equals("1")) //Pick sandwich
       {
-          Sandwich s = null; 
+          Sandwich s = null;    //will this still work when moving to option menu?
           currentFood = s;
-          input.speak(SANDWICH_MENU_TEXT);  //pick if you want a hot or cold sandwich          
-          if (key.equals("1"))
-          {
-              s.setSize("HOT");              //need to pick hot here 
-          }
-          else if (key.equals("2"))
-          {
-              s.setSize("COLD");              //need to pick cold here
-          }
-          
-          currentCart.add(currentFood);
+          state = ORDER_OPT_MENU;
+          input.speak(SANDWICH_MENU_TEXT);  //pick if you want a hot or cold sandwich
       }
+      
       else if (key.equals("2")) //Pick soup
       {
           Soup sp = null; 
           currentFood = sp;
-          input.speak(SOUP_MENU_TEXT);  //pick if you want a hot or cold sandwich          
-          if (key.equals("1"))
-          {
-              sp.setSize("LARGE");              //need to pick large here
-          }
-          else if (key.equals("2"))
-          {
-              sp.setSize("SMALL");              //need to pick small here
-          }
-          
-          currentCart.add(currentFood);
+          state = ORDER_OPT_MENU;
+          input.speak(SOUP_MENU_TEXT);  //pick if you want a hot or cold soup              
       }
+      
       else if (key.equals("3"))
       {
           MacNCheese mc = null; 
           currentFood = mc;
           input.speak(MAC_MENU_TEXT);  //pick if you want a hot or cold sandwich          
-          if (key.equals("1"))
-          {
-              mc.setSize("LARGE");              //need to pick large here
-          }
-          else if (key.equals("2"))
-          {
-              mc.setSize("SMALL");              //need to pick small here
-          }
-          
-          currentCart.add(currentFood);
       }
       else if (key.equals("4")) //Pick salad
       {
           Salad sa = null; 
           currentFood = sa;
           input.speak(SALAD_MENU_TEXT);  //pick if you want a hot or cold sandwich          
-          if (key.equals("1"))
-          {
-              sa.setSize("HALF");              //need to pick half here
-          }
-          else if (key.equals("2"))
-          {
-              sa.setSize("WHOLE");              //need to pick whole here
-          }
-          
-          currentCart.add(currentFood);
       }
       
       else if (key.equals("5")) //Pick grainbowl
       {
           GrainBowl g = null; 
-          currentFood = g;
-          
+          currentFood = g;          
           currentCart.add(currentFood);
       }
       
@@ -239,6 +194,69 @@ public class Connection
       }
     }
 
+     /**
+      Menu with options for each food choice.
+      @param key the interface key chosen by the user 
+   */
+   
+   private void orderOptMenu(String key) 
+   {
+      if (currentFood.getType() == 1)   //Sandwich        
+      {
+        if (key.equals("1")) 
+        {
+            currentFood.setSize(0); //small
+            currentFood.setKind(0); //cold
+        }
+        
+        else if (key.equals("2"))
+        {
+            currentFood.setSize(0); //small
+            currentFood.setKind(1); //hot              
+        }
+        
+        else if (key.equals("3"))
+        {
+            currentFood.setSize(1); //large
+            currentFood.setKind(0); //cold              
+        }
+        
+        else if (key.equals("4"))
+        {
+            currentFood.setSize(1); //large
+            currentFood.setKind(1); //hot              
+        }
+        
+        else
+            input.speak("Invalid input.");
+        
+        currentCart.add(currentFood);
+        state = ORDER_MENU;
+      }
+      
+      else if (currentFood.getType() == 2 || currentFood.getType() == 3 || currentFood.getType() == 4)   //Soup, Mac, or Salad        
+      {
+        if (key.equals("1")) 
+        {
+            currentFood.setSize(0); //small
+        }
+        
+        else if (key.equals("2"))
+        {
+            currentFood.setSize(1); //large          
+        }
+        
+        else
+            input.speak("Invalid input."); 
+        
+        currentCart.add(currentFood);
+        state = ORDER_MENU;
+      }
+      
+      else
+        input.speak("Invalid option."); 
+    }
+   
     /**
       Delivery Menu.
       @param key phone key pressed by the user
@@ -366,18 +384,18 @@ public class Connection
    private OType currentOrder;
    private String accumulatedKeys;
    private Interface input;
-   private String currentRecording;
    private int state;
 
-   private static final int DISCONNECTED = 0;
-   private static final int WELCOME = 1;
-   private static final int ORDER_MENU = 2;
-   private static final int DELIVERY_MENU = 3;
-   private static final int PAYMENT_MENU = 4;
-   private static final int SUBMIT_MENU = 5;
-   private static final int PROCESSING_MENU = 6;
-   private static final int DONE_MENU = 7;
-   private static final int LOGOUT = 8;
+    private static final int DISCONNECTED = 0;
+    private static final int WELCOME = 1;
+    private static final int ORDER_MENU = 2;
+    private static final int ORDER_OPT_MENU = 3;
+    private static final int DELIVERY_MENU = 4;
+    private static final int PAYMENT_MENU = 5;
+    private static final int SUBMIT_MENU = 6;
+    private static final int PROCESSING_MENU = 7;
+    private static final int DONE_MENU = 8;
+    private static final int LOGOUT = 9;
    
    private static final String WELCOME_TEXT = 
          "Enter your login info."; 
@@ -386,6 +404,11 @@ public class Connection
          "Enter 1 to listen to your messages\n"
          + "Enter 2 to change your passcode\n"
          + "Enter 3 to change your greeting";
+   
+    private static final String ORDER_OPT_MENU_TEXT = 
+       "Enter 1 to listen to your messages\n"
+       + "Enter 2 to change your passcode\n"
+       + "Enter 3 to change your greeting";
    
    private static final String SANDWICH_MENU_TEXT = 
          "Select if you want a hot or cold sandwich.";

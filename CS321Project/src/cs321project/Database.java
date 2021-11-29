@@ -29,6 +29,15 @@ public class Database {
         return prices[i][j];
     }
     
+    boolean passCheck(String pass) { //need to check if password is in admins/staff/customers
+        if (pass == admins || )
+        {
+            
+        }
+        return true;
+        
+    }
+    
     protected final float[][] prices = new float[Constants.MAX_ITEMS][Constants.MAX_SIZES];
     protected final String[][] admins = new String[Constants.TOTAL_MANAGERS][2];
     protected final String[][] staff = new String[Constants.TOTAL_EMPLOYEES][2];

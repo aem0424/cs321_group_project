@@ -1,85 +1,76 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package cs321project;
-
+package cs321project; // Change this, if needed
 /**
  CS 321-03 GROUP PROJECT (PANERA BREAD)
- SANDWICH CLASS
+ Sandwich.java
  Dr. Huaming Zhang
  CS 321-03
- November 10, 2021
-This is a very early version of the SANDWICH class. It will be added onto and
-revised later, and will get a proper description then. 
- */
+ November 28, 2021
 
-public abstract class Sandwich implements Food {
+This is a VERY early version of the Sandwich class. It will be added onto and
+revised later, and will get a proper description then.
+*/
+
+
+public class Sandwich implements Food {
     @Override
-    public float getPrice(){
-        return price; // enter a calculation here
+    public float getPrice() {
+        price = Constants.DATABASE.seekPrice(type,size);
+        return price;
     }
     
     @Override
     public int getType() {
-        return 1; // change this once the other classes are completed
+        return type; // May change this later once other classes are completed
     }
     
     @Override
     public int getSize() {
-        if (size == Size.HOT)
-        {
-            return 1;
-        }
-        
-        else if (size == Size.COLD)
-        {
-            return 2;
-        }
-        
-        else 
-        {
-            return 0;           //throw exception here?
-        }
-        
-    }
- 
-    @Override
-    public String getName(){
-         if (type == Type.SANDWICH)
-             name = "Sandwich";
-         else 
-             name = "tba";
-         return name;
+        return size; // Same as above
     }
     
     @Override
-    public void setSize(String aSize) {
-        if (Size.HOT.toString().equals(aSize))
-        {
-            size = Size.HOT;
-        }
-        
-        else if (Size.COLD.toString().equals(aSize))
-        {
-            size = Size.COLD;
-        }
-        
-        else 
-        {
-            
-        }
-        
+    public String getName() {
+        return name;
     }
     
-    //PRIVATE VARIABLES
-    private float price;
-    Type type = Type.SANDWICH;
-    Size size;
-    private String name;
-
-    private enum Type { SANDWICH } ;
-    private enum Size { HOT, COLD };
-
-}
+    /**
+     *
+     * @return
+     */
+    @Override
+    public int getKind() {
+        return kind;
+    }
+    
+    @Override
+    public String getKindName() {
+        return kindName;
+    }
+    
+    @Override
+    public void setKind(int input) {
+        if (input == 0 || input == 1) {
+            kind = input;
+            kindName = kindArray[input];
+        }
+        else
+            System.out.println("ERROR: This kind is not supported for " + getName() + ".");
+    }
+    
+    @Override
+    public void setSize(int input) {
+        if (input == 0 || input == 1) // Valid sizes for this food
+            size = input;
+        else
+            System.out.println("ERROR: This size is not supported for " + getName() + ".");
+    }
+    
+    // PRIVATE VARIABLES
+    private float price = 0f;
+    private final int type = 0; // Type 1 corresponds to salad
+    private int size = 0; // Default size is 0 (small); can also be 1 (large)
+    private int kind = 0; // 0 corresponds to Cold, 1 corresponds to Hot
+    private final String name = "Sandwich"; // Can be defined since it only has one possible name
+    private final String[] kindArray = new String[]{"Cold", "Hot"}; // Initializes an array containing all possible sandwich kinds (hot, cold, etc.)
+    private String kindName = kindArray[0]; // Defaults to "Cold"
+} // END OF FILE
