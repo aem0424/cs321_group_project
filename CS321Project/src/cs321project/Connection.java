@@ -38,8 +38,8 @@ public class Connection
    {       
         if (state == WELCOME)
             welcomeMenu(key);
-        else if (state == DENIED_MENU)
-            deniedMenu(key);
+        else if (state == CREDENTIALS_MENU)
+            credentialsMenu(key);
         else if (state == ORDER_MENU)
             orderMenu(key);
         else if (state == ORDER_OPT_MENU)
@@ -90,13 +90,15 @@ public class Connection
         if (user.equals("Customer")){
            if (pass.equals("password")) //currentTicket.checkPasscode(accumulatedKeys)
            {
-              state = ORDER_MENU;
+              userType = 0;
+              state = CREDENTIALS_MENU;
               input.addPanel(input.credentialsPanel(true));
               input.setPanel("next");
 
            }
            else {
-              state = DENIED_MENU;
+              userType = 3;
+              state = CREDENTIALS_MENU;
               input.addPanel(input.credentialsPanel(false));
               input.setPanel("next");
            }
@@ -105,12 +107,14 @@ public class Connection
         else if (user.equals("Employee")){
            if (pass.equals("password"))
            {
-              state = PROCESSING_MENU;
+              userType = 1;
+              state = CREDENTIALS_MENU;
               input.addPanel(input.credentialsPanel(true));
               input.setPanel("next");
            }
            else {
-              state = DENIED_MENU;
+              userType = 3;
+              state = CREDENTIALS_MENU;
               input.addPanel(input.credentialsPanel(false));
               input.setPanel("next");
            }
@@ -119,27 +123,50 @@ public class Connection
         else if (user == "Manager"){
            if (pass.equals("password"))
            {
-              state = MANAGER_MENU;
+              userType = 2;
+              state = CREDENTIALS_MENU;
               input.addPanel(input.credentialsPanel(true));
               input.setPanel("next");
            }
            else {
-              state = DENIED_MENU;
+              userType = 3;
+              state = CREDENTIALS_MENU;
               input.addPanel(input.credentialsPanel(false));
               input.setPanel("next");
            }
         }
 
         else {
-            state = DENIED_MENU;
+            userType = 3;
+            state = CREDENTIALS_MENU;
             input.addPanel(input.credentialsPanel(false));
             input.setPanel("next"); 
         }
       }
    }
    
-   private void deniedMenu(String key) {
+   private void credentialsMenu(String key) {
        if (key.equals("1")) {
+           if (userType == 0){
+                state = ORDER_MENU;
+                input.addPanel(input.orderPanel());
+                input.setPanel("next");
+           }
+           else if (userType == 1){ // need to read newest order to determine which menu to go into
+               state = PROCESSING_MENU;
+                input.addPanel(input.employeePanel(true));
+                input.setPanel("next");
+           }
+           else if (userType == 2){
+               state = MANAGER_MENU;
+                input.addPanel(input.managerPanel());
+                input.setPanel("next");
+           }
+           if (userType == 3){
+               throw new java.lang.RuntimeException("Invalid User Type.");
+           }
+       }
+       else if (key.equals("2")) {
            resetConnection();
        }
    }
@@ -455,6 +482,7 @@ public class Connection
    private OType currentOrder;
    private Interface input;
    private int state;
+   private int userType;
 
    private static final int DISCONNECTED = 0;
    private static final int WELCOME = 1;
@@ -466,5 +494,5 @@ public class Connection
    private static final int PROCESSING_MENU = 7;
    private static final int LOGOUT_MENU = 8;
    private static final int MANAGER_MENU = 9;
-   private static final int DENIED_MENU = 10;
+   private static final int CREDENTIALS_MENU = 10;
 }

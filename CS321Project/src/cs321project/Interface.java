@@ -124,7 +124,28 @@ public class Interface {
     public  JPanel orderPanel(){
         // Make new panel.
         JPanel order = new JPanel();
+        order.setLayout(new BorderLayout());
         order.setBackground(Color.DARK_GRAY);
+        
+        String[] keyLabels = {"Sandwich","Soup","Mac'N'Cheese","Salad","Grain Bowl"};
+        JPanel keyPanel = new JPanel();
+        keyPanel.setLayout(new GridLayout(4, 3));
+        for (int i = 0; i < 5; i++)
+        {
+            final String label = keyLabels[i];
+            int j = i+1;
+            JButton keyButton = new JButton(label);
+            keyPanel.add(keyButton);
+            keyButton.addActionListener(new
+                ActionListener()
+                {
+                    public void actionPerformed(ActionEvent event)
+                    {
+                        connect.dial(String.valueOf(j));
+                    }
+                });
+        }
+        order.add(keyPanel, BorderLayout.CENTER);
         
         return order;
     }
