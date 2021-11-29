@@ -10,6 +10,6 @@ package cs321project;
  * @author User
  */
 public interface OType {
-    String getType(); // Returns the Order type
+    String getType(); //Returns the Order type
 }
 

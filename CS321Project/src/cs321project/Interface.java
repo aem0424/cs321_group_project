@@ -6,6 +6,7 @@ package cs321project;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -91,10 +92,20 @@ public class Interface {
             credentials.add(credentialsLabel);
         }
         
+        JButton continueButton = new JButton("Continue");
+        continueButton.setBounds(375, 300, 80, 25);
+        continueButton.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    connect.dial("1");
+                }
+            });
+        credentials.add(continueButton);
+        
         return credentials;        
     }
     
-    public  JPanel employeePanel() {
+    public  JPanel employeePanel(Boolean bool) {
         JPanel employeePanel = new JPanel();
         employeePanel.setLayout(null);
         employeePanel.setBackground(Color.LIGHT_GRAY);
@@ -234,6 +245,13 @@ public class Interface {
         return pass;
     }
     
+    public ArrayList<Object> getPaymentInfo() {
+        ArrayList<Object> info = new ArrayList<Object>();
+        info.add(ccnum); info.add(cvc); info.add(exp); info.add(zip);
+        
+        return info;
+    }
+    
     public void run (Connection c) {
         connect = c;
     }
@@ -243,8 +261,13 @@ public class Interface {
     private CardLayout layout;
 
     private int orderNumber;
-    private  String user;
-    private  String pass;
+    private String user;
+    private String pass;
+    
+    private long ccnum;
+    private int cvc; 
+    private int exp;
+    private int zip;
     
     private Connection connect;
 }

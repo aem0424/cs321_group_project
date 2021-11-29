@@ -9,6 +9,7 @@ package cs321project;
  item so they can be referenced later.
 */
 import java.io.IOException;
+import java.util.Arrays;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import org.xml.sax.SAXException;
@@ -28,12 +29,55 @@ public class Database {
         return prices[i][j];
     }
     
-    boolean passCheck(String pass) { //need to check if password is in admins/staff/customers
-//        if (pass == admins || )
-//        {
-//            
-//        }
-        return true;
+    boolean passCheck(String pass, String userType) { //need to check if password is in admins/staff/customers
+        
+        if ("customer".equals(userType))
+        {
+            
+        for (int i = 0; i < customers.length; i++)
+        {
+            if (pass.equals(customers[i][1]))
+            {
+                return true;
+            }
+        }
+        
+        return false;
+        }
+        
+        else if ("employee".equals(userType))
+        {
+            for (int i = 0; i < staff.length; i++)
+            {
+                if (pass.equals(staff[i][1]))
+                {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+        
+        else if ("manager".equals(userType))
+        {
+        for (int i = 0; i < admins.length; i++)
+        {
+            if (pass.equals(admins[i][1]))
+            {
+                return true;
+            }
+        }
+        
+        return false;
+        }
+        
+        else
+        {
+            return false;
+        }
+        
+        
+        
     }
     
     protected final float[][] prices = new float[Constants.MAX_ITEMS][Constants.MAX_SIZES];

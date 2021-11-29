@@ -43,8 +43,8 @@ public class Connection
             orderOptMenu(key);
         else if (state == DELIVERY_MENU)
             deliveryMenu(key);
-    //      else if (state == PAYMENT_MENU)
-    //         paymentMenu(key);
+        else if (state == PAYMENT_MENU)
+            paymentMenu(key);
         else if (state == SUBMIT_MENU)
             submitMenu(key);
         else if (state == PROCESSING_MENU)
@@ -54,13 +54,7 @@ public class Connection
         else if (state == LOGOUT_MENU)
             logoutMenu(key);
    }
-   
-   public void paymentInfo(long ccnum, int cvc, int exp, int zip)
-   {
-        if (state == PAYMENT_MENU)
-            paymentMenu(ccnum, cvc, exp, zip);
-   }
-   
+
    /**
       Reset the connection to the initial state and prompt
       for login
@@ -74,7 +68,7 @@ public class Connection
       input.setPanel("next");
       
       currentCart = new Cart();                 // move these to start of orderMenu() bc employee and manager dont need cart or ticket?
-      currentTicket = new Ticket(currentCart, currentOrder);      
+      currentTicket = new Ticket(currentCart, currentOrder, currentTicketNumber);      
       
    }
 
@@ -91,7 +85,7 @@ public class Connection
       Constants.DATABASE.initializeData();
       if (key.equals("1")) {
         if (user.equals("Customer")){
-           if (pass.equals("password")) //currentTicket.checkPasscode(pass)
+           if (Constants.DATABASE.passCheck(pass, "customer")) //Constants.DATABASE.passCheck(pass)
            {
               input.addPanel(input.credentialsPanel(true));
               input.setPanel("next");
@@ -107,7 +101,7 @@ public class Connection
         }
 
         else if (user.equals("Employee")){
-           if (pass.equals("password"))
+           if (Constants.DATABASE.passCheck(pass, "employee"))
            {
               state = PROCESSING_MENU;
               input.addPanel(input.credentialsPanel(true));
@@ -121,7 +115,7 @@ public class Connection
         }
 
         else if (user.equals("Manager")){
-           if (pass.equals("password"))
+           if (Constants.DATABASE.passCheck(pass, "manager"))
            {
               state = MANAGER_MENU;
               input.addPanel(input.credentialsPanel(true));
@@ -142,6 +136,102 @@ public class Connection
       }
    }
 
+   /**
+      Try to log in the user.
+      @param key the phone key pressed by the user
+   */
+   private void welcomeMenu(String key)   //need to differentiate between users from xml storage file
+   {                                //incomplete
+    
+      String user = input.getUsername();
+      String pass = input.getPassword();
+       
+      Constants.DATABASE.initializeData();
+      if (key.equals("1")) {
+        if (user.equals("Customer")){
+           if (pass.equals("password")) //currentTicket.checkPasscode(accumulatedKeys)
+           {
+              userType = 0;
+              state = CREDENTIALS_MENU;
+              input.addPanel(input.credentialsPanel(true));
+              input.setPanel("next");
+
+           }
+           else {
+              userType = 3;
+              state = CREDENTIALS_MENU;
+              input.addPanel(input.credentialsPanel(false));
+              input.setPanel("next");
+           }
+        }
+
+        else if (user.equals("Employee")){
+           if (pass.equals("password"))
+           {
+              userType = 1;
+              state = CREDENTIALS_MENU;
+              input.addPanel(input.credentialsPanel(true));
+              input.setPanel("next");
+           }
+           else {
+              userType = 3;
+              state = CREDENTIALS_MENU;
+              input.addPanel(input.credentialsPanel(false));
+              input.setPanel("next");
+           }
+        }
+
+        else if (user == "Manager"){
+           if (pass.equals("password"))
+           {
+              userType = 2;
+              state = CREDENTIALS_MENU;
+              input.addPanel(input.credentialsPanel(true));
+              input.setPanel("next");
+           }
+           else {
+              userType = 3;
+              state = CREDENTIALS_MENU;
+              input.addPanel(input.credentialsPanel(false));
+              input.setPanel("next");
+           }
+        }
+
+        else {
+            userType = 3;
+            state = CREDENTIALS_MENU;
+            input.addPanel(input.credentialsPanel(false));
+            input.setPanel("next"); 
+        }
+      }
+   }
+   
+   private void credentialsMenu(String key) {
+       if (key.equals("1")) {
+           if (userType == 0){
+                state = ORDER_MENU;
+                input.addPanel(input.orderPanel());
+                input.setPanel("next");
+           }
+           else if (userType == 1){ // need to read newest order to determine which menu to go into
+               state = PROCESSING_MENU;
+                input.addPanel(input.employeePanel(true));
+                input.setPanel("next");
+           }
+           else if (userType == 2){
+               state = MANAGER_MENU;
+                input.addPanel(input.managerPanel());
+                input.setPanel("next");
+           }
+           if (userType == 3){
+               throw new java.lang.RuntimeException("Invalid User Type.");
+           }
+       }
+       else if (key.equals("2")) {
+           resetConnection();
+       }
+   }
+   
    /**
       Respond to the user's selection from message menu.
       @param key the interface key pressed by the user 
@@ -274,23 +364,26 @@ public class Connection
    */   
     private void deliveryMenu(String key)       //do we need a new menu for enetring the delivery address? or do we just add it into this menu
     {
-      input.addPanel(input.deliveryOptionsPanel());
-      
-      if (key.equals("1")) //Delivery
-      {         
-          Delivery d = null; 
-          currentOrder = d;
-            //enter address         
-          if (key.equals("1")) //Submit 
-          {
-              state = PAYMENT_MENU;
-              input.addPanel(input.paymentPanel());
-              input.setPanel("next");
-          }
-          else 
-          {
-              throw new java.lang.RuntimeException("I don't know how you even managed to get this error."); 
-          }
+        input.addPanel(input.deliveryOptionsPanel());
+
+        if (key.equals("1")) //Delivery
+        {         
+            Delivery d = null; 
+            currentOrder = d;
+                     
+            if (key.equals("1")) //Submit 
+            {
+                state = PAYMENT_MENU;
+                String address = input.getAddress();
+                currentTicket.setAddress(address);
+                
+                input.addPanel(input.paymentPanel());
+                input.setPanel("next");
+            }
+            else 
+            {
+                throw new java.lang.RuntimeException("I don't know how you even managed to get this error."); 
+            }
       }
       
       else if (key.equals("2")) //Pickup
@@ -310,18 +403,16 @@ public class Connection
       Payment Menu.
       @param key interface key pressed by the user
    */   
-    private void paymentMenu(long ccnum, int cvc, int exp, int zip)        //need to collect data from user
+    private void paymentMenu(String key)        //need to collect data from user
     {
         Payment p = new Payment();        
-        PaymentInfo pi = new PaymentInfo(ccnum, cvc, exp, zip);
         
-        /**                                 //can we do this so that we can re-add this to dial()
         long ccnum = input.getCCnum();
         int cvc = input.getCVC();
         int exp = input.getExp();
         int zip = input.getZip();
-        */
-                
+        PaymentInfo pi = new PaymentInfo(ccnum, cvc, exp, zip);
+                        
         if (p.checkInfo(pi) == true)
         {
             state = LOGOUT_MENU;
@@ -348,7 +439,7 @@ public class Connection
    */   
     private void submitMenu(String key)
     {
-        //need to display Food panel until submit key is pushed, move this to payment Menu after completed
+        //need to display Ticket panel until submit key is pushed, move this to payment Menu after completed
         
         if (key.equals("1")) //Submit button pressed
         {         
@@ -368,7 +459,7 @@ public class Connection
    */   
     private void processMenu(String key)
     {
-        currentTicket = orderq.remove();        //takes first ticket in queue
+        currentTicket = orderq.get();        //takes first ticket in queue
         
         //Make seperate panel that shows ticket so we can see status change accordingly?
         
@@ -453,6 +544,7 @@ public class Connection
    private Cart currentCart;
    private Food currentFood;
    private OType currentOrder;
+   private int currentTicketNumber;
    private Interface input;
    private int state;
 

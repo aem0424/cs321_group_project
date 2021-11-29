@@ -17,5 +17,4 @@ public abstract class Delivery implements OType {
         return "Delivery";
         
     }
-    
 }
