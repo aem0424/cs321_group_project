@@ -120,7 +120,7 @@ public class Connection
            }
         }
 
-        else if (user == "Manager"){
+        else if ("Manager".equals(user)){
            if (Constants.DATABASE.passCheck(pass, "manager"))
            {
               userType = 2;
@@ -313,8 +313,8 @@ public class Connection
             if (key.equals("1")) //Submit 
             {
                 state = PAYMENT_MENU;
-                String address = input.getAddress();
-                currentTicket.setAddress(address);
+                //String address = input.getAddress();
+                //currentTicket.setAddress(address);
                 
                 input.addPanel(input.paymentPanel());
                 input.setPanel("next");

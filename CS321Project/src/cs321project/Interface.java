@@ -77,7 +77,7 @@ public class Interface {
         return login;
     }
     
-    public  JPanel credentialsPanel(Boolean bool) {
+    public JPanel credentialsPanel(Boolean bool) {
         JPanel credentials = new JPanel();
         credentials.setLayout(null);
         credentials.setBackground(Color.LIGHT_GRAY);
