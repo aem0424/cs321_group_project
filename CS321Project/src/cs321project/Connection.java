@@ -406,7 +406,16 @@ public class Connection
             if (key.equals("1"))    //yes
             {
                 currentTicket.changeStatus(2);
-                //wait 5 seconds to signify delivery time
+                
+                try {                           //Pauses for 5 seconds
+                    // pause for 5 seconds
+                    TimeUnit.SECONDS.sleep(5);
+                }
+                
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                
                 currentTicket.changeStatus(3);
                 state = LOGOUT_MENU;
             }
