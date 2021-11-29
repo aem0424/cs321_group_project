@@ -35,28 +35,30 @@ public class Connection
    */
    public void dial(String key)
    {       
-      if (state == WELCOME)
-         welcomeMenu(key);
-      if (state == ORDER_MENU)
-         orderMenu(key);
-      else if (state == ORDER_OPT_MENU)
-         orderOptMenu(key);
-      else if (state == DELIVERY_MENU)
-         deliveryMenu(key);
-//      else if (state == PAYMENT_MENU)
-//         paymentMenu(key);
-//      else if (state == SUBMIT_MENU)
-//         submitMenu(key);
-      else if (state == PROCESSING_MENU)
-         processMenu(key);
-      else if (state == LOGOUT_MENU)
-         logoutMenu(key);
+        if (state == WELCOME)
+            welcomeMenu(key);
+        else if (state == ORDER_MENU)
+            orderMenu(key);
+        else if (state == ORDER_OPT_MENU)
+            orderOptMenu(key);
+        else if (state == DELIVERY_MENU)
+            deliveryMenu(key);
+    //      else if (state == PAYMENT_MENU)
+    //         paymentMenu(key);
+        else if (state == SUBMIT_MENU)
+            submitMenu(key);
+        else if (state == PROCESSING_MENU)
+            processMenu(key);
+        else if (state == MANAGER_MENU)
+            managerMenu(key);
+        else if (state == LOGOUT_MENU)
+            logoutMenu(key);
    }
    
    public void paymentInfo(long ccnum, int cvc, int exp, int zip)
    {
-       if (state == PAYMENT_MENU)
-          paymentMenu(ccnum, cvc, exp, zip);
+        if (state == PAYMENT_MENU)
+            paymentMenu(ccnum, cvc, exp, zip);
    }
    
    /**
@@ -81,7 +83,7 @@ public class Connection
       @param key the phone key pressed by the user
    */
    private void welcomeMenu(String key)   //need to differentiate between users from xml storage file
-   {                                //incomplete
+   {                                
     
       String user = input.getUsername();
       String pass = input.getPassword();
@@ -89,7 +91,7 @@ public class Connection
       Constants.DATABASE.initializeData();
       if (key.equals("1")) {
         if (user.equals("Customer")){
-           if (pass.equals("password")) //currentTicket.checkPasscode(accumulatedKeys)
+           if (pass.equals("password")) //currentTicket.checkPasscode(pass)
            {
               input.addPanel(input.credentialsPanel(true));
               input.setPanel("next");
@@ -118,7 +120,7 @@ public class Connection
            }
         }
 
-        else if (user == "Manager"){
+        else if (user.equals("Manager")){
            if (pass.equals("password"))
            {
               state = MANAGER_MENU;
@@ -200,7 +202,7 @@ public class Connection
       }
       else
       {
-          throw new java.lang.RuntimeException("I don't know how you even managed to get this error.");
+          throw new java.lang.RuntimeException("Wrong button press.");
       }
     }
 
@@ -208,8 +210,6 @@ public class Connection
       Menu with options for each food choice.
       @param key the interface key chosen by the user 
    */
-   
-   
    private void orderOptMenu(String key) 
    {
       if (currentFood.getType() == 1)   //Sandwich        
@@ -239,7 +239,7 @@ public class Connection
         }
         
         else
-            throw new java.lang.RuntimeException("I don't know how you even managed to get this error.");
+            throw new java.lang.RuntimeException("Wrong button press.");
         
         currentCart.add(currentFood);
         state = ORDER_MENU;
@@ -258,21 +258,21 @@ public class Connection
         }
         
         else
-            throw new java.lang.RuntimeException("I don't know how you even managed to get this error.");
+            throw new java.lang.RuntimeException("Wrong button press.");
         
         currentCart.add(currentFood);
         state = ORDER_MENU;
       }
       
       else
-        throw new java.lang.RuntimeException("I don't know how you even managed to get this error."); 
+        throw new java.lang.RuntimeException("Food type is not found."); 
     }
    
     /**
       Delivery Menu.
-      @param key phone key pressed by the user
+      @param key interface key pressed by the user
    */   
-    private void deliveryMenu(String key)
+    private void deliveryMenu(String key)       //do we need a new menu for enetring the delivery address? or do we just add it into this menu
     {
       input.addPanel(input.deliveryOptionsPanel());
       
@@ -303,18 +303,25 @@ public class Connection
       }
       
       else
-         throw new java.lang.RuntimeException("I don't know how you even managed to get this error.");
+         throw new java.lang.RuntimeException("Wrong button press.");
     }
 
     /**
       Payment Menu.
-      @param key phone key pressed by the user
+      @param key interface key pressed by the user
    */   
     private void paymentMenu(long ccnum, int cvc, int exp, int zip)        //need to collect data from user
     {
         Payment p = new Payment();        
         PaymentInfo pi = new PaymentInfo(ccnum, cvc, exp, zip);
         
+        /**                                 //can we do this so that we can re-add this to dial()
+        long ccnum = input.getCCnum();
+        int cvc = input.getCVC();
+        int exp = input.getExp();
+        int zip = input.getZip();
+        */
+                
         if (p.checkInfo(pi) == true)
         {
             state = LOGOUT_MENU;
@@ -331,32 +338,33 @@ public class Connection
         
         else 
         {
-         throw new java.lang.RuntimeException("I don't know how you even managed to get this error.");
+         throw new java.lang.RuntimeException("Payment check is neither true or false.");
         }
     }
 
     /**
       Delivery Menu.
-      @param key phone key pressed by the user
+      @param key interface key pressed by the user
    */   
-//    private void submitMenu(String key)
-//    {
-//        currentTicket.displayTicket();
-//        
-//        if (key.equals("1")) //Submit button pressed
-//        {         
-//            state = LOGOUT_MENU;
-//        }
-//
-//        else
-//        {
-//            throw new java.lang.RuntimeException("I don't know how you even managed to get this error.");
-//        }
-//    }
+    private void submitMenu(String key)
+    {
+        //need to display Food panel until submit key is pushed, move this to payment Menu after completed
+        
+        if (key.equals("1")) //Submit button pressed
+        {         
+            state = LOGOUT_MENU;
+            input.addPanel(input.logoutPanel()); 
+            input.setPanel("next");
+        }
+
+        else
+            throw new java.lang.RuntimeException("Wrong button press.");
+        
+    }
 
     /**
       Process Menu.
-      @param key phone key pressed by the user
+      @param key interface key pressed by the user
    */   
     private void processMenu(String key)
     {
@@ -379,7 +387,7 @@ public class Connection
             
             else
             {
-                throw new java.lang.RuntimeException("I don't know how you even managed to get this error.");
+                throw new java.lang.RuntimeException("Wrong button press.");
             }
         }
 
@@ -396,29 +404,48 @@ public class Connection
                         
             else
             {
-                throw new java.lang.RuntimeException("I don't know how you even managed to get this error.");
+                throw new java.lang.RuntimeException("Wrong button press.");
             }
         }
         
         else
         {
-            throw new java.lang.RuntimeException("I don't know how you even managed to get this error.");   
+            throw new java.lang.RuntimeException("Not delivery or takeout type.");   
         }
     }
 
     /**
+      Manager Menu.
+      @param key interface key pressed by the user
+   */   
+    private void managerMenu(String key)
+    {
+        if (key.equals("1")) //Exit
+        {
+            state = LOGOUT_MENU;
+            input.addPanel(input.logoutPanel()); 
+            input.setPanel("next");
+        }
+        
+        else
+            throw new java.lang.RuntimeException("Wrong button press.");
+    }
+    
+    /**
       Last Menu.
-      @param key phone key pressed by the user
+      @param key interface key pressed by the user
    */   
     private void logoutMenu(String key)
     {
+        if (key.equals("1"))
+        {
+            orderq.add(currentTicket);      //Adds current ticket to orderqueue
+            resetConnection();
+        }
         
-        input.addPanel(input.logoutPanel());
-        input.setPanel("next");
-        
-        orderq.add(currentTicket);      //Adds current ticket to orderqueue
-        
-        resetConnection();
+        else
+            throw new java.lang.RuntimeException("Logout error.");
+
     }
     
    private OrderQueue orderq;
