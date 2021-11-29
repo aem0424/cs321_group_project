@@ -43,10 +43,9 @@ public class Ticket {
        return o;
    }
    
-   public String displayTicket()
+   public String displayFood()
    {
-       return ("Items: " + cart.displayFood() +
-                    "Total Price: "); // plus whatever else we want the ticket to display
+       return cart.displayFood();
    }
    
     private final Cart cart;

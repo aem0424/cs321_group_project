@@ -6,6 +6,7 @@ To change this license header, choose License Headers in Project Properties.
  */
 package cs321project;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,28 +36,24 @@ public class Connection
    */
    public void dial(String key)
    {       
-      if (state == WELCOME)
-         welcomeMenu(key);
-      if (state == ORDER_MENU)
-         orderMenu(key);
-      else if (state == ORDER_OPT_MENU)
-         orderOptMenu(key);
-      else if (state == DELIVERY_MENU)
-         deliveryMenu(key);
-//      else if (state == PAYMENT_MENU)
-//         paymentMenu(key);
-//      else if (state == SUBMIT_MENU)
-//         submitMenu(key);
-      else if (state == PROCESSING_MENU)
-         processMenu(key);
-      else if (state == LOGOUT_MENU)
-         doneMenu(key);
-   }
-   
-   public void paymentInfo(long ccnum, int cvc, int exp, int zip)
-   {
-       if (state == PAYMENT_MENU)
-          paymentMenu(ccnum, cvc, exp, zip);
+        if (state == WELCOME)
+            welcomeMenu(key);
+        else if (state == ORDER_MENU)
+            orderMenu(key);
+        else if (state == ORDER_OPT_MENU)
+            orderOptMenu(key);
+        else if (state == DELIVERY_MENU)
+            deliveryMenu(key);
+          else if (state == PAYMENT_MENU)
+             paymentMenu(key);
+        else if (state == SUBMIT_MENU)
+            submitMenu(key);
+        else if (state == PROCESSING_MENU)
+            processMenu(key);
+        else if (state == MANAGER_MENU)
+            managerMenu(key);
+        else if (state == LOGOUT_MENU)
+            logoutMenu(key);
    }
    
    /**
@@ -71,7 +68,7 @@ public class Connection
       input.addPanel(input.loginPanel());
       input.setPanel("next");
       
-      currentCart = new Cart();
+      currentCart = new Cart();          // move these to start of orderMenu() bc employee and manager dont need cart or ticket?
       currentTicket = new Ticket(currentCart, currentOrder);      
       
    }
@@ -91,10 +88,9 @@ public class Connection
         if (user.equals("Customer")){
            if (pass.equals("password")) //currentTicket.checkPasscode(accumulatedKeys)
            {
+              state = ORDER_MENU;
               input.addPanel(input.credentialsPanel(true));
               input.setPanel("next");
-              
-              state = ORDER_MENU;
 
            }
            else {
@@ -200,7 +196,7 @@ public class Connection
       }
       else
       {
-          throw new java.lang.RuntimeException("I don't know how you even managed to get this error.");
+          throw new java.lang.RuntimeException("Wrong Button Press.");
       }
     }
 
@@ -239,7 +235,7 @@ public class Connection
         }
         
         else
-            throw new java.lang.RuntimeException("I don't know how you even managed to get this error.");
+            throw new java.lang.RuntimeException("Wrong button press.");
         
         currentCart.add(currentFood);
         state = ORDER_MENU;
@@ -258,14 +254,14 @@ public class Connection
         }
         
         else
-            throw new java.lang.RuntimeException("I don't know how you even managed to get this error.");
+            throw new java.lang.RuntimeException("Wrong Button press.");
         
         currentCart.add(currentFood);
         state = ORDER_MENU;
       }
       
       else
-        throw new java.lang.RuntimeException("I don't know how you even managed to get this error."); 
+        throw new java.lang.RuntimeException("Food type is not found."); 
     }
    
     /**
@@ -273,8 +269,7 @@ public class Connection
       @param key phone key pressed by the user
    */   
     private void deliveryMenu(String key)
-    {
-      input.addPanel(input.deliveryOptionsPanel());
+    {      
       if (key.equals("1")) //Delivery
       {         
           Delivery d = null; 
@@ -303,17 +298,18 @@ public class Connection
       }
       
       else
-         throw new java.lang.RuntimeException("I don't know how you even managed to get this error.");
+         throw new java.lang.RuntimeException("Wrong button press.");
     }
 
     /**
       Payment Menu.
       @param key phone key pressed by the user
    */   
-    private void paymentMenu(long ccnum, int cvc, int exp, int zip)        //need to collect data from user
+    private void paymentMenu(String key)        //need to collect data from user
     {
-        Payment p = new Payment();        
-        PaymentInfo pi = new PaymentInfo(ccnum, cvc, exp, zip);
+        Payment p = new Payment();       
+        ArrayList<Object>info = input.getPaymentInfo();
+        PaymentInfo pi = new PaymentInfo((long)info.get(0), (int)info.get(1), (int)info.get(2), (int)info.get(3));
         
         if (p.checkInfo(pi) == true)
         {
@@ -339,20 +335,20 @@ public class Connection
       Delivery Menu.
       @param key phone key pressed by the user
    */   
-//    private void submitMenu(String key)
-//    {
-//        currentTicket.displayTicket();
-//        
-//        if (key.equals("1")) //Submit button pressed
-//        {         
-//            state = DONE_MENU;
-//        }
-//
-//        else
-//        {
-//            throw new java.lang.RuntimeException("I don't know how you even managed to get this error.");
-//        }
-//    }
+    private void submitMenu(String key)
+    {
+        if (key.equals("1")) //Submit button pressed
+        {         
+            state = LOGOUT_MENU;
+            input.addPanel(input.logoutPanel()); 
+            input.setPanel("next");
+        }
+
+        else
+        {
+            throw new java.lang.RuntimeException("I don't know how you even managed to get this error.");
+        }
+    }
 
     /**
       Process Menu.
@@ -360,28 +356,88 @@ public class Connection
    */   
     private void processMenu(String key)
     {
-      if (key.equals("1"))
-      {         
-          //need to work on this
-      }
+        currentTicket = orderq.remove();        //takes first ticket in queue
+        
+        //Make seperate panel that shows ticket so we can see status change accordingly?
+        
+        if (currentTicket.getOType().getType().equals("Delivery"))       //Delivery
+        {         
+            input.addPanel(input.employeePanel(true));      //ask if food is done and being delivered
+            input.setPanel("next");
+            
+            if (key.equals("1"))    //yes
+            {
+                currentTicket.changeStatus(2);
+                //wait 5 seconds to signify delivery time
+                currentTicket.changeStatus(3);
+                state = LOGOUT_MENU;
+            }
+            
+            else
+            {
+                throw new java.lang.RuntimeException("Wrong button press.");
+            }
+        }
 
-      else
-      {
-          
-      }
+        else if (currentTicket.getOType().getType().equals("Pickup"))       //Pickup
+        {         
+            input.addPanel(input.employeePanel(false));  //ask if food is ready for pickup
+            input.setPanel("next");
+            
+            if (key.equals("1"))
+            {
+                currentTicket.changeStatus(4);
+                state = LOGOUT_MENU;
+            }
+                        
+            else
+            {
+                throw new java.lang.RuntimeException("Wrong button press.");
+            }
+        }
+        
+        else
+        {
+            throw new java.lang.RuntimeException("Not delivery or takeout type.");   
+        }
     }
 
     /**
       Last Menu.
       @param key phone key pressed by the user
    */   
-    private void doneMenu(String key)
+    /**
+      Manager Menu.
+      @param key interface key pressed by the user
+   */   
+    private void managerMenu(String key)
     {
+        if (key.equals("1")) //Exit
+        {
+            state = LOGOUT_MENU;
+            input.addPanel(input.logoutPanel()); 
+            input.setPanel("next");
+        }
         
-        input.addPanel(input.logoutPanel());
-        input.setPanel("next");
+        else
+            throw new java.lang.RuntimeException("Wrong button press.");
+    }
+    
+    /**
+      Last Menu.
+      @param key interface key pressed by the user
+   */   
+    private void logoutMenu(String key)
+    {
+        if (key.equals("1"))
+        {
+            orderq.add(currentTicket);      //Adds current ticket to orderqueue
+            resetConnection();
+        }
         
-        resetConnection();
+        else
+            throw new java.lang.RuntimeException("Logout error.");
+
     }
     
    private OrderQueue orderq;
