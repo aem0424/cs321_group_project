@@ -22,11 +22,13 @@ public class Ticket {
       The default constructor for a Ticket object.
       @param aCart: The food items in the order.
       @param o: The type of order this ticket will represent.
+      @param ticketNum: The ticket number for this ticket.
     */       
-   public Ticket(Cart aCart, OType o)
+   public Ticket(Cart aCart, OType o, int ticketNum)
    {
         cart = aCart;
         this.o = o;
+        this.ticketNum = ticketNum;
    }
 
     /**
@@ -75,9 +77,35 @@ public class Ticket {
    {
        return cart.displayFood();
    }
-   
+   /**
+      Sets the address variable for this object to the user's input.
+      @param address: The address to set for this ticket (mainly used for delivery).
+   */     
+   public void setAddress(String address)
+   {
+       this.address = address;
+   }
+   /**
+      Gets the user's address, associated with this ticket.
+      @return address: The address associated with this ticket.
+   */    
+   public String getAddress()
+   {
+       return address;
+   }
+   /**
+      Gets this ticket's ticket number.
+      @return ticketNum: The ticket number associated with this ticket.
+   */       
+   public int getTicketNumber()
+   {
+       return ticketNum;
+   }
+ 
     // PRIVATE VARIABLES
     private final Cart cart; // The cart, containing the food data in the order
     private int status; // The current state of the order
+    private String address; // The user's address, primarily used for delivery
     private final OType o; // The type of order this ticket is
+    private final int ticketNum; // The number associated with this ticket
 } // END OF FILE
