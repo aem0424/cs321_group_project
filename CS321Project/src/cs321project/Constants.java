@@ -30,5 +30,4 @@ public class Constants {
         protected static final Database DATABASE = new Database(); // Has an array that holds all of the prices, plus all of the login information
         protected static final File FOOD_DATA = new File("StorageAlt.xml"); // The file to get the database information from
         protected static final SAXParserFactory SAX_FACTORY = SAXParserFactory.newInstance(); // SAX Parser factory singleton (only produces one for this project)
-        
 } // END OF FILE
