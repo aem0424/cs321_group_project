@@ -49,7 +49,12 @@ public class Connection
          doneMenu(key);
    }
 
-   public void enterInfo(long ccnum, int cvc, int exp, int zip)
+   public void welcomeInfo(String user, String pass)
+   {
+       welcomeMenu(user, pass);
+   }
+   
+   public void paymentInfo(long ccnum, int cvc, int exp, int zip)
    {
        paymentMenu(ccnum, cvc, exp, zip);
    }
@@ -63,7 +68,9 @@ public class Connection
       currentFood = null;
       accumulatedKeys = "";
       state = WELCOME;
+      
       input.speak(WELCOME_TEXT);
+      
       currentCart = new Cart();
       currentTicket = new Ticket(currentCart, currentOrder);      
       
@@ -85,27 +92,28 @@ public class Connection
       Try to log in the user.
       @param key the phone key pressed by the user
    */
-   private void welcomeMenu(String key)   //need to differentiate between users from xml storage file
+   private void welcomeMenu(String user, String pass)   //need to differentiate between users from xml storage file
    {                                //incomplete
     
       Constants.DATABASE.initializeData();
-               
-      if (key.equals("Customer"))
+      
+      if (Constants.DATABASE.customers[0][1].equals(pass))
+      
+      if (user.equals("Customer"))
       {
-         if (currentTicket.checkPasscode(accumulatedKeys))
+         if (Constants.DATABASE.customers[0][1].equals(pass)) //not sure how to make this check the password corresponding to the user
          {
             state = ORDER_MENU;
             input.speak(ORDER_MENU_TEXT);
          }
          else
-            input.speak("Incorrect passcode. Try again!");
-         
-         accumulatedKeys = "";
+            input.speak("Incorrect passcode. Try again!");      //need to cahnge this to match wrong password screen
+
       }
       
-      else if (key.equals("Employee"))
+      else if (user.equals("Employee"))
       {
-          if (currentTicket.checkPasscode(accumulatedKeys))
+         if (Constants.DATABASE.staff[0][1].equals(pass)) //not sure how to make this check the password corresponding to user
          {
             state = PROCESSING_MENU;
             input.speak(PROCESSING_MENU_TEXT);
@@ -116,9 +124,19 @@ public class Connection
          accumulatedKeys = "";
       }
       
-      else if (key.equals("Manager"))
+      else if (user.equals("Manager"))
       {
-          //Manager should be able to see all tickets, does that mean we make new "manager menu"?
+        if (Constants.DATABASE.customers[0][1].equals(pass)) //not sure how to make this check the password corresponding to user
+        {
+            state = MANAGER_MENU;
+            input.speak(MANAGER_MENU_TEXT);
+        }
+        
+        else
+        {
+            input.speak("Incorrect passcode. Try again!");
+        }
+            
       }
       
       else
@@ -221,42 +239,6 @@ public class Connection
       }
     }
 
-   /**
-      Respond to the user's selection from message menu.
-      @param key the interface key pressed by the user 
-   */
-   
-   /**
-   private void orderOptMenu(String key) //PROBABLY WONT NEED
-   {
-      if (currentFood.getType("Sandwich"))        
-      {
-                     
-      }
-      else if (currentFood.getType("Soup"))
-      {
-         
-      }
-      else if (currentFood.getType("MacNCheese"))
-      {
-         
-      }
-      else if (currentFood.getType("Salad"))
-      {
-         
-      }
-      else if (currentFood.getType("GrainBowl"))
-      {
-         
-      }
-      
-      else
-      {
-          
-      }
-    }
-   */
-   
     /**
       Delivery Menu.
       @param key phone key pressed by the user
@@ -390,12 +372,12 @@ public class Connection
    private static final int DISCONNECTED = 0;
    private static final int WELCOME = 1;
    private static final int ORDER_MENU = 2;
-   private static final int ORDER_OPT_MENU = 3;
-   private static final int DELIVERY_MENU = 4;
-   private static final int PAYMENT_MENU = 5;
-   private static final int SUBMIT_MENU = 6;
-   private static final int PROCESSING_MENU = 7;
-   private static final int DONE_MENU = 8;
+   private static final int DELIVERY_MENU = 3;
+   private static final int PAYMENT_MENU = 4;
+   private static final int SUBMIT_MENU = 5;
+   private static final int PROCESSING_MENU = 6;
+   private static final int DONE_MENU = 7;
+   private static final int LOGOUT = 8;
    
    private static final String WELCOME_TEXT = 
          "Enter your login info."; 
