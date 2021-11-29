@@ -31,8 +31,7 @@ public class Database {
     }
     
     /**
-      The default constructor for the PaymentInfo class; the values will be obtained
-      from the user inputting their payment information.
+      Gets the price for a food of a certain type and size, with data obtained from the parser.
       @param foodType: What kind of food to get the price for (sandwich, grain bowl, etc).
       @param foodSize: The size of the food (small, large, etc).
       @return prices[foodType][foodSize]: The price of an item of the specified type and size.
