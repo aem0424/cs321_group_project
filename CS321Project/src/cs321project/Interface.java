@@ -6,6 +6,9 @@ package cs321project;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
@@ -24,17 +27,12 @@ public class Interface {
         
         layout = new CardLayout();
         panes = new JPanel(layout);
-        panes.add(orderStatusPanel(false));
-//        panes.add(credentialsApproved());
-//        panes.add(credentialsDenied());
-//        panes.add(orderPanel());
         
-        window.add(panes);
-        
+        window.setResizable(false);
         window.setVisible(true);
     }
     
-    private JPanel loginPanel() {
+    public JPanel loginPanel() {
         // Make new panel.
         JPanel login = new JPanel();
         login.setLayout(null);
@@ -64,9 +62,9 @@ public class Interface {
                     //window.add(panes);
                     //addPanel(credentialsPanel(false));
                     //layout.next(panes);
-                    currentUsername = usernameField.getText();
-                    currentPassword = String.valueOf(passwordField.getPassword());
-                    //c.setState(c.CHECK_LOGIN);
+                    user = usernameField.getText();
+                    pass = String.valueOf(passwordField.getPassword());
+                    connect.dial("1");
                 }
             });
         login.add(loginButton);
@@ -78,7 +76,7 @@ public class Interface {
         return login;
     }
     
-    private JPanel credentialsPanel(Boolean bool) {
+    public  JPanel credentialsPanel(Boolean bool) {
         JPanel credentials = new JPanel();
         credentials.setLayout(null);
         credentials.setBackground(Color.LIGHT_GRAY);
@@ -96,7 +94,7 @@ public class Interface {
         return credentials;        
     }
     
-    private JPanel employeePanel() {
+    public  JPanel employeePanel() {
         JPanel employeePanel = new JPanel();
         employeePanel.setLayout(null);
         employeePanel.setBackground(Color.LIGHT_GRAY);
@@ -104,7 +102,7 @@ public class Interface {
         return employeePanel;
     }
     
-    private JPanel managerPanel() {
+    public  JPanel managerPanel() {
         JPanel managerPanel = new JPanel();
         managerPanel.setLayout(null);
         managerPanel.setBackground(Color.LIGHT_GRAY);
@@ -112,7 +110,7 @@ public class Interface {
         return managerPanel;
     }
     
-    private JPanel orderPanel(){
+    public  JPanel orderPanel(){
         // Make new panel.
         JPanel order = new JPanel();
         order.setBackground(Color.DARK_GRAY);
@@ -120,15 +118,33 @@ public class Interface {
         return order;
     }
     
-    private JPanel itemSpecificsPanel() {
+    public  JPanel itemSpecificsPanel(int i) {
         JPanel itemSpecs = new JPanel();
         itemSpecs.setLayout(null);
         itemSpecs.setBackground(Color.LIGHT_GRAY);
         
+//        if (i==1){
+//            
+//        } 
+//        else if (){
+//            
+//        }
+//        else if (i<=){
+//            
+//        }
+        
         return itemSpecs;
     }
     
-    private JPanel paymentPanel() {
+    public  JPanel deliveryOptionsPanel(){
+        JPanel deliveryOptions = new JPanel();
+        deliveryOptions.setLayout(null);
+        deliveryOptions.setBackground(Color.LIGHT_GRAY);
+        
+        return deliveryOptions;
+    }
+    
+    public  JPanel paymentPanel() {
         JPanel paymentPanel = new JPanel();
         paymentPanel.setLayout(null);
         paymentPanel.setBackground(Color.LIGHT_GRAY);
@@ -136,7 +152,7 @@ public class Interface {
         return paymentPanel;
     }
     
-    private JPanel orderStatusPanel(Boolean bool) {
+    public  JPanel orderStatusPanel(Boolean bool) {
         JPanel orderStatus = new JPanel();
         orderStatus.setLayout(null);
         orderStatus.setBackground(Color.LIGHT_GRAY);
@@ -151,7 +167,7 @@ public class Interface {
             completeOrderButton.addActionListener(
             new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    //c.setState(c.LOGOUT)
+                    //
                 }
             });
             orderStatus.add(completeOrderButton);
@@ -185,7 +201,7 @@ public class Interface {
         return orderStatus;
     }
     
-    private JPanel logoutPanel() {
+    public  JPanel logoutPanel() {
         JPanel logout = new JPanel();
         logout.setLayout(null);
         logout.setBackground(Color.LIGHT_GRAY);
@@ -199,12 +215,23 @@ public class Interface {
         window.add(panes);
     }
     
-    private String getUsername() {
-        return currentUsername;
+    public  void setPanel(String s){
+        if (s.equals("first"))
+            layout.first(panes);
+        if (s.equals("next"))
+            layout.next(panes);
+        if (s.equals("prev"))
+            layout.previous(panes);
+        if (s.equals("last"))
+            layout.last(panes);
     }
     
-    private String getPassword() {
-        return currentPassword;
+    public String getUsername() {
+        return user;
+    }
+    
+    public String getPassword() {
+        return pass;
     }
     
     public void run (Connection c) {
@@ -214,10 +241,10 @@ public class Interface {
     private JFrame window;
     private JPanel panes;
     private CardLayout layout;
-            
-    private String currentUsername;
-    private String currentPassword;
+
     private int orderNumber;
+    private  String user;
+    private  String pass;
     
     private Connection connect;
 }
