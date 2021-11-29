@@ -6,6 +6,7 @@ To change this license header, choose License Headers in Project Properties.
  */
 package cs321project;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,6 +38,8 @@ public class Connection
    {       
         if (state == WELCOME)
             welcomeMenu(key);
+        else if (state == CREDENTIALS_MENU)
+            credentialsMenu(key);
         else if (state == ORDER_MENU)
             orderMenu(key);
         else if (state == ORDER_OPT_MENU)
@@ -77,70 +80,6 @@ public class Connection
       @param key the phone key pressed by the user
    */
    private void welcomeMenu(String key)   //need to differentiate between users from xml storage file
-   {                                
-    
-      String user = input.getUsername();
-      String pass = input.getPassword();
-       
-      Constants.DATABASE.initializeData();
-      if (key.equals("1")) {
-        if (user.equals("Customer")){
-           if (Constants.DATABASE.passCheck(pass, "customer")) //Constants.DATABASE.passCheck(pass)
-           {
-              input.addPanel(input.credentialsPanel(true));
-              input.setPanel("next");
-              
-              state = ORDER_MENU;
-
-           }
-           else {
-              input.addPanel(input.credentialsPanel(false));
-              input.setPanel("next");
-              resetConnection();
-           }
-        }
-
-        else if (user.equals("Employee")){
-           if (Constants.DATABASE.passCheck(pass, "employee"))
-           {
-              state = PROCESSING_MENU;
-              input.addPanel(input.credentialsPanel(true));
-              input.setPanel("next");
-           }
-           else {
-              input.addPanel(input.credentialsPanel(false));
-              input.setPanel("next");
-              resetConnection();
-           }
-        }
-
-        else if (user.equals("Manager")){
-           if (Constants.DATABASE.passCheck(pass, "manager"))
-           {
-              state = MANAGER_MENU;
-              input.addPanel(input.credentialsPanel(true));
-              input.setPanel("next");
-           }
-           else {
-              input.addPanel(input.credentialsPanel(false));
-              input.setPanel("next");
-              resetConnection();
-           }
-        }
-
-        else {
-            input.addPanel(input.credentialsPanel(false));
-            input.setPanel("next");
-            resetConnection();
-        }
-      }
-   }
-
-   /**
-      Try to log in the user.
-      @param key the phone key pressed by the user
-   */
-   private void welcomeMenu(String key)   //need to differentiate between users from xml storage file
    {                                //incomplete
     
       String user = input.getUsername();
@@ -149,7 +88,7 @@ public class Connection
       Constants.DATABASE.initializeData();
       if (key.equals("1")) {
         if (user.equals("Customer")){
-           if (pass.equals("password")) //currentTicket.checkPasscode(accumulatedKeys)
+           if (Constants.DATABASE.passCheck(pass, "customer")) //currentTicket.checkPasscode(accumulatedKeys)
            {
               userType = 0;
               state = CREDENTIALS_MENU;
@@ -166,7 +105,7 @@ public class Connection
         }
 
         else if (user.equals("Employee")){
-           if (pass.equals("password"))
+           if (Constants.DATABASE.passCheck(pass, "employee"))
            {
               userType = 1;
               state = CREDENTIALS_MENU;
@@ -182,7 +121,7 @@ public class Connection
         }
 
         else if (user == "Manager"){
-           if (pass.equals("password"))
+           if (Constants.DATABASE.passCheck(pass, "manager"))
            {
               userType = 2;
               state = CREDENTIALS_MENU;
@@ -382,7 +321,7 @@ public class Connection
             }
             else 
             {
-                throw new java.lang.RuntimeException("I don't know how you even managed to get this error."); 
+                throw new java.lang.RuntimeException("Wrong button press."); 
             }
       }
       
@@ -401,18 +340,14 @@ public class Connection
 
     /**
       Payment Menu.
-      @param key interface key pressed by the user
+      @param key phone key pressed by the user
    */   
     private void paymentMenu(String key)        //need to collect data from user
     {
-        Payment p = new Payment();        
+        Payment p = new Payment();       
+        ArrayList<Object>info = input.getPaymentInfo();
+        PaymentInfo pi = new PaymentInfo((long)info.get(0), (int)info.get(1), (int)info.get(2), (int)info.get(3));
         
-        long ccnum = input.getCCnum();
-        int cvc = input.getCVC();
-        int exp = input.getExp();
-        int zip = input.getZip();
-        PaymentInfo pi = new PaymentInfo(ccnum, cvc, exp, zip);
-                        
         if (p.checkInfo(pi) == true)
         {
             state = LOGOUT_MENU;
@@ -429,7 +364,7 @@ public class Connection
         
         else 
         {
-         throw new java.lang.RuntimeException("Payment check is neither true or false.");
+         throw new java.lang.RuntimeException("I don't know how you even managed to get this error.");
         }
     }
 
@@ -465,7 +400,7 @@ public class Connection
         
         if (currentTicket.getOType().getType().equals("Delivery"))       //Delivery
         {         
-            input.addPanel(input.processPanel(1));      //ask if food is done and being delivered
+            input.addPanel(input.employeePanel(true));      //ask if food is done and being delivered
             input.setPanel("next");
             
             if (key.equals("1"))    //yes
@@ -484,7 +419,7 @@ public class Connection
 
         else if (currentTicket.getOType().getType().equals("Pickup"))       //Pickup
         {         
-            input.addPanel(input.processPanel(2));  //ask if food is ready for pickup
+            input.addPanel(input.employeePanel(false));  //ask if food is ready for pickup
             input.setPanel("next");
             
             if (key.equals("1"))
@@ -522,7 +457,7 @@ public class Connection
             throw new java.lang.RuntimeException("Wrong button press.");
     }
     
-    /**
+/**
       Last Menu.
       @param key interface key pressed by the user
    */   
@@ -530,8 +465,16 @@ public class Connection
     {
         if (key.equals("1"))
         {
-            orderq.add(currentTicket);      //Adds current ticket to orderqueue
-            resetConnection();
+            if (userType == 0){
+                orderq.add(currentTicket);      //Adds current ticket to orderqueue
+                currentTicketNumber++;
+                resetConnection();
+            }
+            else {
+                   //Adds current ticket to orderqueue
+               resetConnection();     
+            }
+            
         }
         
         else
@@ -544,9 +487,10 @@ public class Connection
    private Cart currentCart;
    private Food currentFood;
    private OType currentOrder;
-   private int currentTicketNumber;
    private Interface input;
    private int state;
+   private int userType;
+   private int currentTicketNumber = 1;
 
    private static final int DISCONNECTED = 0;
    private static final int WELCOME = 1;
@@ -558,4 +502,5 @@ public class Connection
    private static final int PROCESSING_MENU = 7;
    private static final int LOGOUT_MENU = 8;
    private static final int MANAGER_MENU = 9;
+   private static final int CREDENTIALS_MENU = 10;
 }
