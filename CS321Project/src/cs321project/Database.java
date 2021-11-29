@@ -5,7 +5,6 @@ package cs321project;
  Dr. Huaming Zhang
  CS 321-03
  November 27, 2021
-
  This class contains finds and stores all of the possible prices for each food
  item so they can be referenced later.
 */
@@ -30,12 +29,11 @@ public class Database {
     }
     
     boolean passCheck(String pass) { //need to check if password is in admins/staff/customers
-        if (pass == admins || )
-        {
-            
-        }
+//        if (pass == admins || )
+//        {
+//            
+//        }
         return true;
-        
     }
     
     protected final float[][] prices = new float[Constants.MAX_ITEMS][Constants.MAX_SIZES];
