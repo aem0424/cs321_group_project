@@ -1,7 +1,7 @@
 package cs321project; // Change this, if needed
 /**
  CS 321-03 GROUP PROJECT (PANERA BREAD)
- GRAINBOWL CLASS
+ GrainBowl.java
  Dr. Huaming Zhang
  CS 321-03
  November 8, 2021
@@ -11,38 +11,31 @@ revised later, and will get a proper description then.
 */
 
 
-public class GrainBowl implements Interface {
+public class GrainBowl implements Food {
     @Override
     public float getPrice() {
-        price = Constants.DATABASE.seekPrice(4,1); // Can search for this since it only has one possible price
-        return price; // Put a calculation here later
+        price = Constants.DATABASE.seekPrice(type,size); // For the Grain Bowl, should only return one value
+        return price;
     }
     
     @Override
     public int getType() {
-        return 4; // May change this later once other classes are completed
+        return type; // May change this later once other classes are completed
     }
     
     @Override
     public int getSize() {
-        return 1; // Same as above
+        return size; // Same as above
     }
     
     @Override
     public String getName() {
-        if (type == Type.GRAIN)
-            name = "Grain Bowl";
-        else
-            name = "tba";
         return name;
     }
     
-    
     // PRIVATE VARIABLES
-    private float price;
-    Type type = Type.GRAIN;
-    Size size = Size.LARGE;
-    private String name; // Can be defined since it only has one possible name
-    private enum Type { GRAIN }; // Not really a variable, but defined here for organization's sake
-    private enum Size { LARGE }; // Only size possible (enum in case more options are added later)
-}
+    private float price = 0f;
+    private final int type = 4; // Type 4 coresponds to GrainBowl
+    private int size = 1; // Not set to final in the event that a new size would be defined
+    private final String name = "Grain Bowl"; // Can be defined since it only has one possible name
+} // END OF FILE

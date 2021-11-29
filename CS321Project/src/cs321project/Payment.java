@@ -1,7 +1,7 @@
 package cs321project;
 /**
  CS 321-03 GROUP PROJECT (PANERA BREAD)
- PAYMENT CLASS
+ Payment.java
  Dr. Huaming Zhang
  CS 321-03
  November 15, 2021
@@ -9,6 +9,8 @@ package cs321project;
  This class handles the payment process; it will take some data from the
  PaymentInfo class, and check to make sure that all of the information
  provided is valid.
+  
+ @author anthony_matthews
 */
 
 public class Payment {
@@ -60,5 +62,6 @@ public class Payment {
         return true; // Returns true if all data is correct
     }
     
-    private boolean validInfo = false; // Defaults to false in case of an error
+    // PRIVATE VARIABLES
+    private boolean validInfo = false; // Determines validity of input information; defaults to false in case of an error
 } // END OF FILE

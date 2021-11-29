@@ -9,6 +9,8 @@ package cs321project;
  This class contains a customer's payment information; it will be validated via
  the Payment class, and the transaction will go through if it is determined to
  be valid. Otherwise, the transaction will not happen.
+  
+ @author anthony_matthews
 */
 
 public class PaymentInfo {
@@ -21,7 +23,6 @@ public class PaymentInfo {
       @param zip: The value to be assigned to an object's zip variable.
     */
     public PaymentInfo(long ccnum, int cvc, int exp, int zip) {
-        // INITIALIZE THE VALUES FOR THIS OBJECT
         this.ccnum = ccnum;
         this.cvc = cvc;
         this.exp = exp;
