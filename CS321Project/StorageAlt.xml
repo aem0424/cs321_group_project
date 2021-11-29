@@ -1,0 +1,49 @@
+<?xml version = "1.0" encoding = "UTF-8" standalone = "yes" ?>
+<Info>
+    <Totals>
+        <Total totalManagers = "1" totalEmployees = "1" totalCustomers = "1" />
+    </Totals>
+    <User-Info>
+		<Users>
+			<User role = "Manager" username = "Admin" password = "Panera" />
+                        <User role = "Employee" username = "Staff" password = "Work" />
+                        <User role = "Customer" username = "Cust" password = "Password" />
+		</Users>
+    </User-Info>
+    <Food-Data>
+	<Sandwich>
+                  <Type>Sandwich</Type>
+                  <Size>
+			<Small>7.29</Small>
+                        <Large>10.19</Large>
+		  </Size>
+	</Sandwich>
+        <Salad>
+                  <Type>Salad</Type>
+                  <Size>
+                        <Small>8.39</Small>
+                        <Large>11.59</Large>
+                  </Size>
+        </Salad>
+        <Soup>
+                  <Type>Soup</Type>
+                  <Size>
+                       <Small>5.49</Small>
+                       <Large>6.69</Large>
+                  </Size>
+	</Soup>
+	<MacNCheese>
+                  <Type>MacNCheese</Type>
+                  <Size>
+                       <Small>5.89</Small>
+                       <Large>9.19</Large>
+                  </Size>
+	</MacNCheese>
+	<GrainBowl>
+                  <Type>GrainBowl</Type>
+                  <Size>
+                       <Large>11.19</Large>
+                  </Size>
+	</GrainBowl>
+    </Food-Data>
+</Info>
