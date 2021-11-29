@@ -18,4 +18,8 @@ public interface Food {
     int getType(); // Returns the item's type
     int getSize(); // Returns the item's size, corresponding to an int value
     String getName(); // Returns the name of the menu item
+    public int getKind(); // Gets the food's kind (i.e. modifier), if applicable
+    public String getKindName(); // Returns the name of the food's kind
+    public void setKind(int input); // Sets the food's kind to the desired value
+    public void setSize(int input); // Sets the food's size to the desired value
 } // END OF FILE
