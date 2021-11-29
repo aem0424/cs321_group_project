@@ -65,8 +65,7 @@ public class Connection
       state = WELCOME;
       input.speak(WELCOME_TEXT);
       currentCart = new Cart();
-      currentPrice = new Price();
-      currentTicket = new Ticket(currentCart, currentPrice, currentOrder);      
+      currentTicket = new Ticket(currentCart, currentOrder);      
       
    }
 
@@ -76,7 +75,7 @@ public class Connection
    */
    public void record(String input)
    {
-      if (state == PAYMENT_MENU) 
+      if (state == PAYMENT_MENU || state == DELIVERY_MENU) 
       {
           currentRecording += input;
       }
@@ -89,6 +88,8 @@ public class Connection
    private void welcomeMenu(String key)   //need to differentiate between users from xml storage file
    {                                //incomplete
     
+      Constants.DATABASE.initializeData();
+               
       if (key.equals("Customer"))
       {
          if (currentTicket.checkPasscode(accumulatedKeys))
@@ -144,6 +145,8 @@ public class Connection
           {
               s.setSize("COLD");              //need to pick cold here
           }
+          
+          currentCart.add(currentFood);
       }
       else if (key.equals("2")) //Pick soup
       {
@@ -295,9 +298,7 @@ public class Connection
    */   
     private void paymentMenu(long ccnum, int cvc, int exp, int zip)        //need to collect data from user
     {
-        Payment p = new Payment();
-        currentPayment = p;
-        
+        Payment p = new Payment();        
         PaymentInfo pi = new PaymentInfo(ccnum, cvc, exp, zip);
         
         if (p.checkInfo(pi) == true)
@@ -381,8 +382,6 @@ public class Connection
    private Cart currentCart;
    private Food currentFood;
    private OType currentOrder;
-   private Payment currentPayment;
-   private Price currentPrice;
    private String accumulatedKeys;
    private Interface input;
    private String currentRecording;

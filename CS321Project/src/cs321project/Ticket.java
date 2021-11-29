@@ -11,10 +11,9 @@ package cs321project;
  */
 public class Ticket {
         
-   public Ticket(Cart aCart, Price pr, OType o)
+   public Ticket(Cart aCart, OType o)
    {
         cart = aCart;
-        this.pr = pr;
         this.o = o;
    }
    
@@ -44,19 +43,13 @@ public class Ticket {
        return o;
    }
    
-   public Payment getPrice()
-   {
-       return pr;
-   }
-   
    public String displayTicket()
    {
        return ("Items: " + cart.displayFood() +
-                    "Total Price: " + pr.getPrice()); // plus whatever else we want the ticket to display
+                    "Total Price: "); // plus whatever else we want the ticket to display
    }
    
     private final Cart cart;
     private int status;
-    private final Price pr;
     private final OType o;
 }
