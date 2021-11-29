@@ -22,9 +22,9 @@ public class Constants {
         protected static final int MAX_ITEMS = 5; // Total number of food items (5, for this project's purposes)
         protected static final int MAX_SIZES = 2; // Total number of different sizes available (2, for this project's purposes)   
         // USER INFORMATION CONSTANTS
-        protected static int TOTAL_MANAGERS = 10; // (PLACEHOLDER[?] VALUE) Total number of managers in the system
-        protected static int TOTAL_EMPLOYEES = 10; // (PLACEHOLDER[?] VALUE) Total number of employees in the system
-        protected static int TOTAL_CUSTOMERS = 10; // (PLACEHOLDER[?] VALUE) Total number of customers in the system
+        protected static final int TOTAL_MANAGERS = 10; // (PLACEHOLDER[?] VALUE) Total number of managers in the system
+        protected static final int TOTAL_EMPLOYEES = 10; // (PLACEHOLDER[?] VALUE) Total number of employees in the system
+        protected static final int TOTAL_CUSTOMERS = 10; // (PLACEHOLDER[?] VALUE) Total number of customers in the system
         protected static final int LOGIN_REQUIREMENTS = 2; // Amount of information user must enter in order to login
         // PARSER AND DATABASE CONSTANTS
         protected static final Database DATABASE = new Database(); // Has an array that holds all of the prices, plus all of the login information
