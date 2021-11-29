@@ -127,9 +127,15 @@ public class Interface {
         order.setLayout(new BorderLayout());
         order.setBackground(Color.DARK_GRAY);
         
+        JPanel oNumberPanel = new JPanel();
+        oNumberPanel.setLayout(new BorderLayout());
+        oNumberPanel.add(new JLabel("Order #" + connect.getOrderNumber()),BorderLayout.NORTH);
+        order.a
+        
         String[] keyLabels = {"Sandwich","Soup","Mac'N'Cheese","Salad","Grain Bowl"};
         JPanel keyPanel = new JPanel();
         keyPanel.setLayout(new GridLayout(4, 3));
+        keyPanel.setBackground(Color.DARK_GRAY);
         for (int i = 0; i < 5; i++)
         {
             final String label = keyLabels[i];

@@ -71,7 +71,7 @@ public class Connection
       input.setPanel("next");
       
       currentCart = new Cart();          // move these to start of orderMenu() bc employee and manager dont need cart or ticket?
-      currentTicket = new Ticket(currentCart, currentOrder);      
+      currentTicket = new Ticket(currentCart, currentOrder, currentTicketNumber);      
       
    }
 
@@ -466,14 +466,26 @@ public class Connection
     {
         if (key.equals("1"))
         {
-            orderq.add(currentTicket);      //Adds current ticket to orderqueue
-            resetConnection();
+            if (userType == 0){
+                orderq.add(currentTicket);      //Adds current ticket to orderqueue
+                currentTicketNumber++;
+                resetConnection();
+            }
+            else {
+                   //Adds current ticket to orderqueue
+               resetConnection();     
+            }
+            
         }
         
         else
             throw new java.lang.RuntimeException("Logout error.");
 
     }
+    
+   public int getOrderNumber() {
+       return currentTicketNumber;
+   }
     
    private OrderQueue orderq;
    private Ticket currentTicket;
@@ -483,6 +495,7 @@ public class Connection
    private Interface input;
    private int state;
    private int userType;
+   private int currentTicketNumber=1;
 
    private static final int DISCONNECTED = 0;
    private static final int WELCOME = 1;
