@@ -6,8 +6,8 @@ package cs321project; // Change this, if needed
  CS 321-03
  November 28, 2021
 
-This is a VERY early version of the Salad class. It will be added onto and
-revised later, and will get a proper description then.
+ The class for the Salad food type, implementing functions from
+ the Food interface class.
 */
 
 

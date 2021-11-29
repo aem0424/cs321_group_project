@@ -6,8 +6,8 @@ package cs321project; // Change this, if needed
  CS 321-03
  November 8, 2021
 
-This is a VERY early version of the GrainBowl class. It will be added onto and
-revised later, and will get a proper description then.
+ The class for the Grain Bowl food type, implementing functions from
+ the Food interface class.
 */
 
 
