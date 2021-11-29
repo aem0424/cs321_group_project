@@ -38,6 +38,8 @@ public class Connection
    {       
         if (state == WELCOME)
             welcomeMenu(key);
+        else if (state == DENIED_MENU)
+            deniedMenu(key);
         else if (state == ORDER_MENU)
             orderMenu(key);
         else if (state == ORDER_OPT_MENU)
@@ -94,9 +96,9 @@ public class Connection
 
            }
            else {
+              state = DENIED_MENU;
               input.addPanel(input.credentialsPanel(false));
               input.setPanel("next");
-              resetConnection();
            }
         }
 
@@ -108,9 +110,9 @@ public class Connection
               input.setPanel("next");
            }
            else {
+              state = DENIED_MENU;
               input.addPanel(input.credentialsPanel(false));
               input.setPanel("next");
-              resetConnection();
            }
         }
 
@@ -122,18 +124,24 @@ public class Connection
               input.setPanel("next");
            }
            else {
+              state = DENIED_MENU;
               input.addPanel(input.credentialsPanel(false));
               input.setPanel("next");
-              resetConnection();
            }
         }
 
         else {
+            state = DENIED_MENU;
             input.addPanel(input.credentialsPanel(false));
-            input.setPanel("next");
-            resetConnection();
+            input.setPanel("next"); 
         }
       }
+   }
+   
+   private void deniedMenu(String key) {
+       if (key.equals("1")) {
+           resetConnection();
+       }
    }
 
    /**
@@ -458,4 +466,5 @@ public class Connection
    private static final int PROCESSING_MENU = 7;
    private static final int LOGOUT_MENU = 8;
    private static final int MANAGER_MENU = 9;
+   private static final int DENIED_MENU = 10;
 }

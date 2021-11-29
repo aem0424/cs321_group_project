@@ -93,7 +93,7 @@ public class Interface {
         }
         
         JButton continueButton = new JButton("Continue");
-        continueButton.setBounds(375, 300, 80, 25);
+        continueButton.setBounds(340, 250, 100, 25);
         continueButton.addActionListener(
             new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
