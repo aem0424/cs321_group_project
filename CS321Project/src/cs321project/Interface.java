@@ -17,14 +17,14 @@ public class Interface {
     public Interface() {
         
         // -----------------------------Window---------------------------- 
-        window = new JFrame("Panera Bread");
+        window = new JFrame("Pantera Bread");
         int X = 800; int Y = 500;
         window.setSize(X, Y);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         layout = new CardLayout();
         panes = new JPanel(layout);
-        panes.add(loginPanel());
+        panes.add(orderStatusPanel(false));
 //        panes.add(credentialsApproved());
 //        panes.add(credentialsDenied());
 //        panes.add(orderPanel());
@@ -60,12 +60,13 @@ public class Interface {
         loginButton.addActionListener(
             new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    panes.add(credentialsApproved());
-                    window.add(panes);
-                    switchPanel("next");
+                    //panes.add(credentialsPanel(false));
+                    //window.add(panes);
+                    //addPanel(credentialsPanel(false));
+                    //layout.next(panes);
                     currentUsername = usernameField.getText();
                     currentPassword = String.valueOf(passwordField.getPassword());
-                    //c.setState(CHECK_LOGIN);
+                    //c.setState(c.CHECK_LOGIN);
                 }
             });
         login.add(loginButton);
@@ -77,26 +78,20 @@ public class Interface {
         return login;
     }
     
-    private JPanel credentialsApproved() {
+    private JPanel credentialsPanel(Boolean bool) {
         JPanel credentials = new JPanel();
         credentials.setLayout(null);
         credentials.setBackground(Color.LIGHT_GRAY);
-        
-        JLabel credentialsLabel = new JLabel("Sign-In Approved.");
-        credentialsLabel.setBounds(350, 200, 200, 25);
-        credentials.add(credentialsLabel);
-        
-        return credentials;        
-    }
-    
-    private JPanel credentialsDenied() {
-        JPanel credentials = new JPanel();
-        credentials.setLayout(null);
-        credentials.setBackground(Color.LIGHT_GRAY);
-        
-        JLabel credentialsLabel = new JLabel("Sign-In Denied.");
-        credentialsLabel.setBounds(350, 200, 200, 25);
-        credentials.add(credentialsLabel);
+        if (bool.equals(true)) {
+            JLabel credentialsLabel = new JLabel("Sign-In Approved.");
+            credentialsLabel.setBounds(350, 200, 200, 25);
+            credentials.add(credentialsLabel); 
+        }
+        else {
+            JLabel credentialsLabel = new JLabel("Sign-In Denied.");
+            credentialsLabel.setBounds(350, 200, 200, 25);
+            credentials.add(credentialsLabel);
+        }
         
         return credentials;        
     }
@@ -125,7 +120,7 @@ public class Interface {
         return order;
     }
     
-    private JPanel itemSpecifics() {
+    private JPanel itemSpecificsPanel() {
         JPanel itemSpecs = new JPanel();
         itemSpecs.setLayout(null);
         itemSpecs.setBackground(Color.LIGHT_GRAY);
@@ -141,20 +136,53 @@ public class Interface {
         return paymentPanel;
     }
     
-    private JPanel orderApproved() {
-        JPanel orderAppr = new JPanel();
-        orderAppr.setLayout(null);
-        orderAppr.setBackground(Color.LIGHT_GRAY);
+    private JPanel orderStatusPanel(Boolean bool) {
+        JPanel orderStatus = new JPanel();
+        orderStatus.setLayout(null);
+        orderStatus.setBackground(Color.LIGHT_GRAY);
         
-        return orderAppr;
-    }
-    
-    private JPanel orderDenied() {
-        JPanel orderDen = new JPanel();
-        orderDen.setLayout(null);
-        orderDen.setBackground(Color.LIGHT_GRAY);
+        if (bool.equals(true)){
+            JLabel paymentLabel = new JLabel("Payment information accepted. Order approved.");
+            paymentLabel.setBounds(250, 200, 350, 25);
+            orderStatus.add(paymentLabel); 
+            
+            JButton completeOrderButton = new JButton("Complete Order and Logout");
+            completeOrderButton.setBounds(285, 250, 200, 25);
+            completeOrderButton.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    //c.setState(c.LOGOUT)
+                }
+            });
+            orderStatus.add(completeOrderButton);
+        }
+        else {
+            JLabel paymentLabel = new JLabel("Payment information invalid.");
+            paymentLabel.setBounds(310, 200, 200, 25);
+            orderStatus.add(paymentLabel); 
+            
+            JButton retryPaymentButton = new JButton("Retry Payment");
+            retryPaymentButton.setBounds(210, 250, 140, 25);
+            retryPaymentButton.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    //c.setState(c.PAYMENT)
+                }
+            });
+            orderStatus.add(retryPaymentButton);
+            
+            JButton cancelOrderButton = new JButton("Cancel Order and Logout");
+            cancelOrderButton.setBounds(360, 250, 190, 25);
+            cancelOrderButton.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    //c.setState(c.LOGOUT)
+                }
+            });
+            orderStatus.add(cancelOrderButton);
+        }
         
-        return orderDen;
+        return orderStatus;
     }
     
     private JPanel logoutPanel() {
@@ -166,13 +194,9 @@ public class Interface {
     }
     
     
-    private void switchPanel(String s) {
-        if (s.equals("login"))
-            layout.first(panes);
-        if (s.equals("next"))
-            layout.next(panes);
-        if (s.equals("prev"))
-            layout.previous(panes);
+    public void addPanel(JPanel panel) {
+        panes.add(panel);
+        window.add(panes);
     }
     
     private String getUsername() {
@@ -183,16 +207,17 @@ public class Interface {
         return currentPassword;
     }
     
+    //public void run (Connection c) {
+    //    connect = c;
+    //}
+    
     private JFrame window;
     private JPanel panes;
     private CardLayout layout;
             
     private String currentUsername;
     private String currentPassword;
+    private int orderNumber;
     
-    public void run (Connection c) {
-        connect = c;
-    }
-    
-    private Connection connect;
+    //private Connection connect;
 }
