@@ -261,7 +261,7 @@ public class Interface {
         addressText.setVisible(false);
         deliveryOptions.add(addressText);
         
-        JTextField addressField = new JTextField();
+        JTextField addressField = new JTextField(30);
         addressField.setBounds(200, 350, 300, 25);
         addressField.setVisible(false);
         deliveryOptions.add(addressField);
@@ -308,11 +308,53 @@ public class Interface {
     }
     
     public  JPanel paymentPanel() {
-        JPanel paymentPanel = new JPanel();
-        paymentPanel.setLayout(null);
-        paymentPanel.setBackground(Color.LIGHT_GRAY);
+        JPanel pay = new JPanel();
+        pay.setLayout(null);
+        pay.setBackground(Color.LIGHT_GRAY);
         
-        return paymentPanel;
+        JLabel paymentText = new JLabel("Payment Information");
+        paymentText.setBounds(325, 200, 200, 25);
+        pay.add(paymentText);
+        
+        JLabel ccnumText = new JLabel("Card #:");
+        ccnumText.setBounds(150, 250, 80, 25);
+        JTextField ccnumPrompt = new JTextField(16);
+        ccnumPrompt.setBounds(200, 250, 200, 25);
+        pay.add(ccnumText); pay.add(ccnumPrompt);
+        
+        JLabel cvcText = new JLabel("CVC:");
+        cvcText.setBounds(425, 250, 80, 25);
+        JTextField cvcPrompt = new JTextField(3);
+        cvcPrompt.setBounds(475, 250, 80, 25);
+        pay.add(cvcText); pay.add(cvcPrompt);
+        
+        JLabel expText = new JLabel("Exp. Date:");
+        expText.setBounds(150, 300, 80, 25);
+        JTextField expField = new JTextField(4);
+        expField.setBounds(225, 300, 80, 25);
+        pay.add(expText); pay.add(expField);
+        
+        JLabel zipText = new JLabel("Zip Code:");
+        zipText.setBounds(425, 300, 80, 25);
+        JTextField zipPrompt = new JTextField(5);
+        zipPrompt.setBounds(500, 300, 80, 25);
+        pay.add(zipText); pay.add(zipPrompt);
+        
+        JButton confButton = new JButton("Confirm");
+        confButton.setBounds(325, 350, 100, 50);
+        confButton.addActionListener(
+        new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ccnum = Long.parseLong(ccnumPrompt.getText());
+                cvc = Integer.parseInt(cvcPrompt.getText());
+                exp = Integer.parseInt(expField.getText());
+                zip = Integer.parseInt(zipPrompt.getText());
+                connect.dial("1");
+            }
+        });
+        pay.add(confButton);
+        
+        return pay;
     }
     
     public  JPanel orderStatusPanel(Boolean bool) {
@@ -345,7 +387,7 @@ public class Interface {
             retryPaymentButton.addActionListener(
             new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    //c.setState(c.PAYMENT)
+                    connect.dial("0");
                 }
             });
             orderStatus.add(retryPaymentButton);
@@ -355,7 +397,7 @@ public class Interface {
             cancelOrderButton.addActionListener(
             new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    //c.setState(c.LOGOUT)
+                    connect.dial("5");
                 }
             });
             orderStatus.add(cancelOrderButton);

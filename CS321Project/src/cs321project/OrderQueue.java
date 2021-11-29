@@ -26,6 +26,11 @@ public class OrderQueue {
         return queue.remove(0);
     }
     
+    
+    public Ticket get() {
+        return queue.get(0);
+    }
+    
     /**
      * Adds a ticket to queue
      * @author User

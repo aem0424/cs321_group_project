@@ -316,7 +316,9 @@ public class Connection
             //enter address         
           if (key.equals("1"))
           {
-                            //need to take address here 
+              String address = input.getAddress();              //need to take address here 
+              currentTicket.setAddress(address);
+              
               state = PAYMENT_MENU;
               input.addPanel(input.paymentPanel());
               input.setPanel("next");
@@ -370,10 +372,7 @@ public class Connection
         }
     }
 
-    /**
-      Delivery Menu.
-      @param key phone key pressed by the user
-   */   
+     
     private void submitMenu(String key)
     {
         if (key.equals("1")) //Submit button pressed
@@ -395,7 +394,7 @@ public class Connection
    */   
     private void processMenu(String key)
     {
-        currentTicket = orderq.remove();        //takes first ticket in queue
+        currentTicket = orderq.get();        //takes first ticket in queue
         
         //Make seperate panel that shows ticket so we can see status change accordingly?
         
@@ -408,6 +407,16 @@ public class Connection
             {
                 currentTicket.changeStatus(2);
                 //wait 5 seconds to signify delivery time
+                
+                try {                           //Pauses for 5 seconds
+                    // pause for 5 seconds
+                    TimeUnit.SECONDS.sleep(5);
+                }
+                
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                
                 currentTicket.changeStatus(3);
                 state = LOGOUT_MENU;
             }
@@ -468,6 +477,11 @@ public class Connection
    */   
     private void logoutMenu(String key)
     {
+        if (key.equals("0")) {
+            state = PAYMENT_MENU;
+            input.addPanel(input.paymentPanel()); 
+            input.setPanel("next");
+        }
         if (key.equals("1"))
         {
             if (userType == 0){
@@ -483,7 +497,7 @@ public class Connection
         }
         
         else
-            throw new java.lang.RuntimeException("Logout error.");
+            resetConnection();
 
     }
     
